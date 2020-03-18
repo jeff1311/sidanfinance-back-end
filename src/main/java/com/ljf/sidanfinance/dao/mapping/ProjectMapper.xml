@@ -27,4 +27,13 @@
     id, name, no, contract_no, company_id, contract_sign_date, start_date, end_date, 
     months, total_price, date_insert, date_update
   </sql>
+
+  <select id="getListPage" resultType="java.util.HashMap">
+    SELECT p.id AS id,p.name AS NAME,p.no AS NO,p.contract_no AS contractNo,p.company_id AS companyId,
+           p.contract_sign_date AS contractSignDate,p.start_date AS startDate,p.end_date AS end_date,
+           p.months AS months,p.total_price AS totalPrice,c.name AS companyName,c.group_name AS groupName
+    FROM project p
+    LEFT JOIN company c ON p.company_id = c.id;
+  </select>
+
 </mapper>

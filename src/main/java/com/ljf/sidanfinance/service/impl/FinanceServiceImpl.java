@@ -1,5 +1,6 @@
 package com.ljf.sidanfinance.service.impl;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
 import com.ljf.sidanfinance.dao.model.Code;
@@ -26,7 +27,8 @@ public class FinanceServiceImpl implements IFinanceService {
     public JSONObject getProjectList(JSONObject Params) {
         List<Project> list = projectMapper.selectAll();
         JSONObject info = Code.SUCCESS.toJson();
-        info.put("list",list);
+        info.put("count", list.size());
+        info.put("data", JSON.parseArray(JSON.toJSONString(list)));
         return info;
     }
 
