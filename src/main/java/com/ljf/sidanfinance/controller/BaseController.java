@@ -1,10 +1,12 @@
 package com.ljf.sidanfinance.controller;
 
+import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.ljf.sidanfinance.dao.model.Code;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -127,6 +129,15 @@ public class BaseController {
                 pw.close();
             }
         }
+    }
+
+    /**
+     * 从request里解析JSONObject
+     * @param request
+     * @return
+     */
+    public JSONObject getParams(HttpServletRequest request) {
+        return JSON.parseObject(JSON.toJSONString(request.getParameterMap()).replace(":[", ":").replace("],", ",").replace("]}", "}"));
     }
 
 }

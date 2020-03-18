@@ -2,6 +2,7 @@ package com.ljf.sidanfinance.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
 import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
+import com.ljf.sidanfinance.dao.model.Code;
 import com.ljf.sidanfinance.dao.model.Project;
 import com.ljf.sidanfinance.service.IFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,9 +18,14 @@ public class FinanceServiceImpl implements IFinanceService {
 
     @Override
     public JSONObject getIndexData() {
+
+        return null;
+    }
+
+    @Override
+    public JSONObject getProjectList(JSONObject Params) {
         List<Project> list = projectMapper.selectAll();
-        JSONObject info = new JSONObject();
-        info.put("code",0);
+        JSONObject info = Code.SUCCESS.toJson();
         info.put("list",list);
         return info;
     }
