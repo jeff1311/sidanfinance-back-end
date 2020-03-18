@@ -1,0 +1,24 @@
+#server
+server:
+  port: 80
+#  servlet:
+#    context-path: /cwebe
+
+#spring
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    type: com.alibaba.druid.pool.DruidDataSource
+    connectionProperties: druid.stat.mergeSql=true
+    url: jdbc:mysql://49.235.109.84:3306/sidan_finance?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    data-username: root
+    data-password: ljf92219
+#  resources:
+#    static-locations: [
+#      "classpath:test1",
+#      "classpath:test2"
+#    ]
+#  mvc:
+#    view:
+#      prefix: classpath:static
+#      suffix: .html
