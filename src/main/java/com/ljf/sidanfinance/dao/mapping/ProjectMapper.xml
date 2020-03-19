@@ -29,11 +29,15 @@
   </sql>
 
   <select id="getListPage" resultType="java.util.HashMap">
-    SELECT p.id AS id,p.name AS NAME,p.no AS NO,p.contract_no AS contractNo,p.company_id AS companyId,
+    SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_id AS companyId,
            p.contract_sign_date AS contractSignDate,p.start_date AS startDate,p.end_date AS end_date,
            p.months AS months,p.total_price AS totalPrice,c.name AS companyName,c.group_name AS groupName
     FROM project p
-    LEFT JOIN company c ON p.company_id = c.id;
+    LEFT JOIN company c ON p.company_id = c.id
+    WHERE 1 = 1
+    <if test="params.projectName != null and params.projectName != ''">
+      AND p.name LIKE CONCAT('%',#{params.projectName},'%')
+    </if>
   </select>
 
 </mapper>

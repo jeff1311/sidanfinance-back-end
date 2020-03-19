@@ -10,7 +10,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     type: com.alibaba.druid.pool.DruidDataSource
     connectionProperties: druid.stat.mergeSql=true
-    url: jdbc:mysql://49.235.109.84:3306/sidan_finance?useUnicode=true&amp;characterEncoding=UTF-8&amp;zeroDateTimeBehavior=convertToNull
+    url: jdbc:mysql://49.235.109.84:3306/sidan_finance?useUnicode=true&characterEncoding=utf-8&useSSL=false&serverTimezone=GMT
     data-username: root
     data-password: ljf92219
 #  resources:
