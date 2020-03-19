@@ -1,5 +1,7 @@
 package com.ljf.sidanfinance.controller;
 
+import com.alibaba.fastjson.JSON;
+import com.github.pagehelper.PageHelper;
 import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
 import com.ljf.sidanfinance.dao.model.Project;
 import org.slf4j.Logger;
@@ -14,6 +16,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.List;
 
 
 @RestController
@@ -26,9 +29,11 @@ public class HelloController {
 
     @RequestMapping("/hello")
     public String hello(HttpServletRequest request, HttpServletResponse response){
-        Project project = projectMapper.selectByPrimaryKey(1);
-        logger.info(project.getName());
-        return "hello world";
+        PageHelper.startPage(2,3);
+        List<Project> projects = projectMapper.selectAll();
+//        List<Project> projects = projectMapper.getAll();
+        logger.info(JSON.toJSONString(projects));
+        return JSON.toJSONString(projects);
     }
 
     @RequestMapping("/test/img")
