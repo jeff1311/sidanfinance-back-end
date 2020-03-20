@@ -6,6 +6,8 @@ public interface IFinanceService {
 
     public abstract JSONObject getIndexData();
 
-    public abstract JSONObject getProjectList(JSONObject Params);
+    public abstract JSONObject getProjectList(JSONObject params);
+
+    public abstract JSONObject addProject(JSONObject params);
 
 }

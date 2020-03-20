@@ -14,7 +14,7 @@
       <arg column="contract_sign_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="start_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
-      <arg column="months" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="months" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="total_price" javaType="java.lang.Double" jdbcType="DOUBLE" />
       <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="date_update" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -30,7 +30,7 @@
 
   <select id="getListPage" resultType="java.util.HashMap">
     SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_id AS companyId,
-           p.contract_sign_date AS contractSignDate,p.start_date AS startDate,p.end_date AS end_date,
+           p.contract_sign_date AS contractSignDate,p.start_date AS startDate,p.end_date AS endDate,
            p.months AS months,p.total_price AS totalPrice,c.name AS companyName,c.group_name AS groupName
     FROM project p
     LEFT JOIN company c ON p.company_id = c.id
@@ -38,6 +38,7 @@
     <if test="params.projectName != null and params.projectName != ''">
       AND p.name LIKE CONCAT('%',#{params.projectName},'%')
     </if>
+    ORDER BY p.date_insert DESC
   </select>
 
 </mapper>

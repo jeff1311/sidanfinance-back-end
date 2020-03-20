@@ -24,8 +24,14 @@ public class FinanceController extends BaseController {
     }
 
     @RequestMapping(value="/project/list",method = RequestMethod.GET)
-    public void project(HttpServletRequest request, HttpServletResponse response){
+    public void projectList(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.getProjectList(getParams(request));
+        returnInfo(response,info);
+    }
+
+    @RequestMapping(value="/project/add",method = RequestMethod.POST)
+    public void addProject(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.addProject(getParams(request));
         returnInfo(response,info);
     }
 

@@ -1,6 +1,7 @@
 package com.ljf.sidanfinance.dao.model;
 
 import javax.persistence.Column;
+import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.Table;
 import java.util.Date;
@@ -11,6 +12,7 @@ public class Project {
      * ID
      */
     @Id
+    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
@@ -56,7 +58,7 @@ public class Project {
     /**
      * 月数（历时）
      */
-    private Byte months;
+    private Integer months;
 
     /**
      * 合同总价
@@ -76,7 +78,7 @@ public class Project {
     @Column(name = "date_update")
     private Date dateUpdate;
 
-    public Project(Integer id, String name, String no, String contractNo, Integer companyId, Date contractSignDate, Date startDate, Date endDate, Byte months, Double totalPrice, Date dateInsert, Date dateUpdate) {
+    public Project(Integer id, String name, String no, String contractNo, Integer companyId, Date contractSignDate, Date startDate, Date endDate, Integer months, Double totalPrice, Date dateInsert, Date dateUpdate) {
         this.id = id;
         this.name = name;
         this.no = no;
@@ -244,7 +246,7 @@ public class Project {
      *
      * @return months - 月数（历时）
      */
-    public Byte getMonths() {
+    public Integer getMonths() {
         return months;
     }
 
@@ -253,7 +255,7 @@ public class Project {
      *
      * @param months 月数（历时）
      */
-    public void setMonths(Byte months) {
+    public void setMonths(Integer months) {
         this.months = months;
     }
 
