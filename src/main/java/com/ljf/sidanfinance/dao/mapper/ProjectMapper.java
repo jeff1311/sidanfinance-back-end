@@ -14,7 +14,7 @@ import java.util.Map;
 
 public interface ProjectMapper extends Mapper<Project> {
 
-    public abstract List<Map<String,String>> getListPage(@Param("params") JSONObject params);
+    public abstract List<Map<String,String>> getList(@Param("params") JSONObject params);
 
     @Select("select * from project")
     @Results({

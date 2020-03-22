@@ -18,6 +18,7 @@
       <arg column="total_price" javaType="java.lang.Double" jdbcType="DOUBLE" />
       <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="date_update" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="delete_mark" javaType="java.lang.Integer" jdbcType="INTEGER" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
@@ -25,16 +26,17 @@
       WARNING - @mbg.generated
     -->
     id, name, no, contract_no, company_id, contract_sign_date, start_date, end_date, 
-    months, total_price, date_insert, date_update
+    months, total_price, date_insert, date_update, delete_mark
   </sql>
 
-  <select id="getListPage" resultType="java.util.HashMap">
+  <select id="getList" resultType="java.util.HashMap">
     SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_id AS companyId,
-           p.contract_sign_date AS contractSignDate,p.start_date AS startDate,p.end_date AS endDate,
-           p.months AS months,p.total_price AS totalPrice,c.name AS companyName,c.group_name AS groupName
+           DATE_FORMAT(p.contract_sign_date,'%Y-%d-%m') AS contractSignDate,DATE_FORMAT(p.start_date,'%Y-%d-%m') AS startDate,
+           DATE_FORMAT(p.end_date,'%Y-%d-%m') AS endDate, p.months AS months,
+           CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,c.name AS companyName,c.group_name AS groupName
     FROM project p
     LEFT JOIN company c ON p.company_id = c.id
-    WHERE 1 = 1
+    WHERE delete_mark = 0
     <if test="params.projectName != null and params.projectName != ''">
       AND p.name LIKE CONCAT('%',#{params.projectName},'%')
     </if>

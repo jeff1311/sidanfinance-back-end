@@ -78,7 +78,13 @@ public class Project {
     @Column(name = "date_update")
     private Date dateUpdate;
 
-    public Project(Integer id, String name, String no, String contractNo, Integer companyId, Date contractSignDate, Date startDate, Date endDate, Integer months, Double totalPrice, Date dateInsert, Date dateUpdate) {
+    /**
+     * 删除标志
+     */
+    @Column(name = "delete_mark")
+    private Integer deleteMark;
+
+    public Project(Integer id, String name, String no, String contractNo, Integer companyId, Date contractSignDate, Date startDate, Date endDate, Integer months, Double totalPrice, Date dateInsert, Date dateUpdate, Integer deleteMark) {
         this.id = id;
         this.name = name;
         this.no = no;
@@ -91,6 +97,7 @@ public class Project {
         this.totalPrice = totalPrice;
         this.dateInsert = dateInsert;
         this.dateUpdate = dateUpdate;
+        this.deleteMark = deleteMark;
     }
 
     public Project() {
@@ -311,5 +318,13 @@ public class Project {
      */
     public void setDateUpdate(Date dateUpdate) {
         this.dateUpdate = dateUpdate;
+    }
+
+    public Integer getDeleteMark() {
+        return deleteMark;
+    }
+
+    public void setDeleteMark(Integer deleteMark) {
+        this.deleteMark = deleteMark;
     }
 }

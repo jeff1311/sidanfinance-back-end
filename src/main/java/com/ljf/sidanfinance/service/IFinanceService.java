@@ -10,4 +10,12 @@ public interface IFinanceService {
 
     public abstract JSONObject addProject(JSONObject params);
 
+    public abstract JSONObject getCompanyList(JSONObject params);
+
+    public abstract JSONObject addCompany(JSONObject params);
+
+    public abstract JSONObject getEmployeeList(JSONObject params);
+
+    public abstract JSONObject addEmployee(JSONObject params);
+
 }

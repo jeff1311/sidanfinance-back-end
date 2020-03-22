@@ -4,15 +4,17 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ljf.sidanfinance.dao.mapper.CompanyMapper;
+import com.ljf.sidanfinance.dao.mapper.EmployeeMapper;
 import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
 import com.ljf.sidanfinance.dao.model.Code;
+import com.ljf.sidanfinance.dao.model.Company;
+import com.ljf.sidanfinance.dao.model.Employee;
 import com.ljf.sidanfinance.dao.model.Project;
 import com.ljf.sidanfinance.service.IFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.util.*;
 
 @Service("financeService")
@@ -20,6 +22,10 @@ public class FinanceServiceImpl implements IFinanceService {
 
     @Autowired
     ProjectMapper projectMapper;
+    @Autowired
+    CompanyMapper companyMapper;
+    @Autowired
+    EmployeeMapper employeeMapper;
 
     @Override
     public JSONObject getIndexData() {
@@ -30,7 +36,7 @@ public class FinanceServiceImpl implements IFinanceService {
     @Override
     public JSONObject getProjectList(JSONObject params) {
         PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
-        List<Map<String, String>> list = projectMapper.getListPage(params);
+        List<Map<String, String>> list = projectMapper.getList(params);
         PageInfo pageInfo = new PageInfo(list);
 //        PageHelper.clearPage();
         JSONObject info = Code.SUCCESS.toJson();
@@ -56,10 +62,80 @@ public class FinanceServiceImpl implements IFinanceService {
         project.setEndDate(endDate);
         project.setMonths(months);
         project.setTotalPrice(params.getDouble("totalPrice"));
-        project.setDateInsert(new Date());
-        int result = projectMapper.insertSelective(project);
-        System.out.println(result);
-        System.out.println(project.getId());
+        int result = 0;
+        Integer projectId = params.getInteger("projectId");
+        if(projectId != null){
+            project.setId(projectId);
+            project.setDateUpdate(new Date());
+            project.setDeleteMark(params.getInteger("deleteMark"));
+            result = projectMapper.updateByPrimaryKeySelective(project);
+        }else{
+            project.setDateInsert(new Date());
+            project.setDeleteMark(0);
+            result = projectMapper.insertSelective(project);
+        }
+        if(result == 1){
+            return Code.SUCCESS.toJson();
+        }else{
+            return Code.FAILURE.toJson();
+        }
+    }
+
+    @Override
+    public JSONObject getCompanyList(JSONObject params) {
+//        PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
+        List<Company> list = companyMapper.getList(params);
+//        PageInfo pageInfo = new PageInfo(list);
+//        PageHelper.clearPage();
+        JSONObject info = Code.SUCCESS.toJson();
+//        info.put("count", pageInfo.getTotal());
+        info.put("data", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
+    }
+
+    @Override
+    public JSONObject addCompany(JSONObject params) {
+        Company company = new Company();
+        company.setName(params.getString("companyName"));
+        company.setGroupName(params.getString("groupName"));
+        company.setDateInsert(new Date());
+        int result = companyMapper.insertSelective(company);
+        if(result == 1){
+            return Code.SUCCESS.toJson();
+        }else{
+            return Code.FAILURE.toJson();
+        }
+    }
+
+    @Override
+    public JSONObject getEmployeeList(JSONObject params) {
+        PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
+        List<Map<String, String>> list = employeeMapper.getList(params);
+        PageInfo pageInfo = new PageInfo(list);
+//        PageHelper.clearPage();
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("count", pageInfo.getTotal());
+        info.put("data", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
+    }
+
+    @Override
+    public JSONObject addEmployee(JSONObject params) {
+        Employee employee = new Employee();
+        employee.setName(params.getString("name"));
+        employee.setType(params.getInteger("type"));
+        int result = 0;
+        Integer employeeId = params.getInteger("employeeId");
+        if(employeeId != null){
+            employee.setId(employeeId);
+            employee.setDateUpdate(new Date());
+            employee.setDeleteMark(params.getInteger("deleteMark"));
+            result = employeeMapper.updateByPrimaryKeySelective(employee);
+        }else{
+            employee.setDateInsert(new Date());
+            employee.setDeleteMark(0);
+            result = employeeMapper.insertSelective(employee);
+        }
         if(result == 1){
             return Code.SUCCESS.toJson();
         }else{
