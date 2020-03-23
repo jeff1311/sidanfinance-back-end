@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljf.sidanfinance.dao.mapper.CompanyMapper">
+  <resultMap id="BaseResultMap" type="com.ljf.sidanfinance.dao.model.Company">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="group_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, name, group_name, date_insert
+  </sql>
+
+  <select id="getList" resultMap="BaseResultMap">
+    SELECT <include refid="Base_Column_List"/>
+    FROM company
+    ORDER BY date_insert DESC
+  </select>
+
+</mapper>
