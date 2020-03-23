@@ -31,8 +31,8 @@
 
   <select id="getList" resultType="java.util.HashMap">
     SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_id AS companyId,
-           DATE_FORMAT(p.contract_sign_date,'%Y-%d-%m') AS contractSignDate,DATE_FORMAT(p.start_date,'%Y-%d-%m') AS startDate,
-           DATE_FORMAT(p.end_date,'%Y-%d-%m') AS endDate, p.months AS months,
+           DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,DATE_FORMAT(p.start_date,'%Y-%m-%d') AS startDate,
+           DATE_FORMAT(p.end_date,'%Y-%m-%d') AS endDate, p.months AS months,
            CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,c.name AS companyName,c.group_name AS groupName
     FROM project p
     LEFT JOIN company c ON p.company_id = c.id
