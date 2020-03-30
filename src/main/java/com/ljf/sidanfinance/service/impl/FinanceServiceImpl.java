@@ -4,18 +4,21 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
+import com.ljf.sidanfinance.dao.mapper.CalenMapper;
 import com.ljf.sidanfinance.dao.mapper.CompanyMapper;
 import com.ljf.sidanfinance.dao.mapper.EmployeeMapper;
 import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
-import com.ljf.sidanfinance.dao.model.Code;
-import com.ljf.sidanfinance.dao.model.Company;
-import com.ljf.sidanfinance.dao.model.Employee;
-import com.ljf.sidanfinance.dao.model.Project;
+import com.ljf.sidanfinance.dao.model.*;
 import com.ljf.sidanfinance.service.IFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import tk.mybatis.mapper.entity.Example;
 
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
+import java.util.Map;
+
 
 @Service("financeService")
 public class FinanceServiceImpl implements IFinanceService {
@@ -26,6 +29,8 @@ public class FinanceServiceImpl implements IFinanceService {
     CompanyMapper companyMapper;
     @Autowired
     EmployeeMapper employeeMapper;
+    @Autowired
+    CalenMapper calenMapper;
 
     @Override
     public JSONObject getIndexData() {
@@ -141,6 +146,17 @@ public class FinanceServiceImpl implements IFinanceService {
         }else{
             return Code.FAILURE.toJson();
         }
+    }
+
+    @Override
+    public JSONObject attendanceCalendar(JSONObject params) {
+        Calen calendar = new Calen();
+        calendar.setYr(params.getString("year"));
+        calendar.setMm(params.getString("month"));
+        List<Calen> days = calenMapper.select(calendar);
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("calendar",days);
+        return info;
     }
 
     /**

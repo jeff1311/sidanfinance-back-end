@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljf.sidanfinance.dao.mapper.CalenMapper">
+  <resultMap id="BaseResultMap" type="com.ljf.sidanfinance.dao.model.Calen">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <idArg column="dt" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="dt2" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="yr" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="mm" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="dd" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="day_of_week" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="week_num" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="qr" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="bourse_week" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="yrmm" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="week_begin" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="week_end" javaType="java.lang.String" jdbcType="VARCHAR" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    dt, dt2, yr, mm, dd, day_of_week, week_num, qr, bourse_week, yrmm, week_begin, week_end
+  </sql>
+</mapper>
