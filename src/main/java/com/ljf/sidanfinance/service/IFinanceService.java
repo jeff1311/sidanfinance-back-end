@@ -16,6 +16,8 @@ public interface IFinanceService {
 
     public abstract JSONObject getEmployeeList(JSONObject params);
 
+    public abstract JSONObject getEmployeeListAll(JSONObject params);
+
     public abstract JSONObject addEmployee(JSONObject params);
 
     public abstract JSONObject attendanceCalendar(JSONObject params);

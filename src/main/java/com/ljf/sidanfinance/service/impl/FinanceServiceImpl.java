@@ -125,6 +125,15 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
+    public JSONObject getEmployeeListAll(JSONObject params) {
+        List<Map<String, String>> list = employeeMapper.getList(params);
+        PageInfo pageInfo = new PageInfo(list);
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("list", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
+    }
+
+    @Override
     public JSONObject addEmployee(JSONObject params) {
         Employee employee = new Employee();
         employee.setName(params.getString("name"));
