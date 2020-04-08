@@ -4,10 +4,7 @@ import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.ljf.sidanfinance.dao.mapper.CalenMapper;
-import com.ljf.sidanfinance.dao.mapper.CompanyMapper;
-import com.ljf.sidanfinance.dao.mapper.EmployeeMapper;
-import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
+import com.ljf.sidanfinance.dao.mapper.*;
 import com.ljf.sidanfinance.dao.model.*;
 import com.ljf.sidanfinance.service.IFinanceService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -31,6 +28,8 @@ public class FinanceServiceImpl implements IFinanceService {
     EmployeeMapper employeeMapper;
     @Autowired
     CalenMapper calenMapper;
+    @Autowired
+    ProjectEmployeeMapper projectEmployeeMapper;
 
     @Override
     public JSONObject getIndexData() {
@@ -166,6 +165,21 @@ public class FinanceServiceImpl implements IFinanceService {
         JSONObject info = Code.SUCCESS.toJson();
         info.put("calendar",days);
         return info;
+    }
+
+    @Override
+    public JSONObject projectAddEmp(JSONObject params) {
+        Integer projectId = params.getInteger("projectId");
+        String[] empIds = params.getString("empIds").split(",");
+        for(String empId : empIds){
+            ProjectEmployee pe = new ProjectEmployee();
+            pe.setProjectId(projectId);
+            pe.setEmployeeId(Integer.parseInt(empId));
+            pe.setDateInsert(new Date());
+            pe.setDeleteMark(0);
+            projectEmployeeMapper.insertSelective(pe);
+        }
+        return Code.SUCCESS.toJson();
     }
 
     /**

@@ -39,7 +39,7 @@
     <if test="params.type != null and params.type != ''">
         AND type = #{type}
     </if>
-    ORDER BY type
+    ORDER BY date_insert DESC
   </select>
 
 </mapper>
