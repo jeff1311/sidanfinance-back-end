@@ -172,14 +172,28 @@ public class FinanceServiceImpl implements IFinanceService {
         Integer projectId = params.getInteger("projectId");
         String[] empIds = params.getString("empIds").split(",");
         for(String empId : empIds){
-            ProjectEmployee pe = new ProjectEmployee();
-            pe.setProjectId(projectId);
-            pe.setEmployeeId(Integer.parseInt(empId));
-            pe.setDateInsert(new Date());
-            pe.setDeleteMark(0);
-            projectEmployeeMapper.insertSelective(pe);
+            ProjectEmployee pe = projectEmployeeMapper.getByProjectIdAndEmpId(projectId,Integer.parseInt(empId));
+            if(pe == null){
+                pe = new ProjectEmployee();
+                pe.setProjectId(projectId);
+                pe.setEmployeeId(Integer.parseInt(empId));
+                pe.setDateInsert(new Date());
+                pe.setDeleteMark(0);
+                projectEmployeeMapper.insertSelective(pe);
+            }
         }
         return Code.SUCCESS.toJson();
+    }
+
+    @Override
+    public JSONObject projectEmpList(JSONObject params) {
+        PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
+        List<Map<String, String>> list = projectEmployeeMapper.getList(params);
+        PageInfo pageInfo = new PageInfo(list);
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("count", pageInfo.getTotal());
+        info.put("data", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
     }
 
     /**

@@ -77,4 +77,10 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
+    @RequestMapping(value="/project/cost/employee/list",method = RequestMethod.GET)
+    public void projectEmpList(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.projectEmpList(getParams(request));
+        returnInfo(response,info);
+    }
+
 }

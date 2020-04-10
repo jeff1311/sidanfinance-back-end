@@ -24,4 +24,6 @@ public interface IFinanceService {
 
     public abstract JSONObject projectAddEmp(JSONObject params);
 
+    public abstract JSONObject projectEmpList(JSONObject params);
+
 }

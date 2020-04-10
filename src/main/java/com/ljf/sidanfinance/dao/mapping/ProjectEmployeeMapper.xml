@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljf.sidanfinance.dao.mapper.ProjectEmployeeMapper">
+  <resultMap id="BaseResultMap" type="com.ljf.sidanfinance.dao.model.ProjectEmployee">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="project_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="employee_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="delete_mark" javaType="java.lang.Integer" jdbcType="INTEGER" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, project_id, employee_id, date_insert, delete_mark
+  </sql>
+
+  <select id="getByProjectIdAndEmpId" resultMap="BaseResultMap">
+    SELECT * FROM project_employee WHERE project_id = #{projectId} AND employee_id = #{employeeId}
+  </select>
+
+  <select id="getList" resultType="java.lang.Integer">
+    SELECT e.id,e.name
+    FROM project_employee pe
+    LEFT JOIN emoployee e ON e.id = pe.employee_id
+    WHERE 1 = 1
+    <if test="params.projectId != null">
+      AND pe.project_id = #{params.projectId}
+    </if>
+    <if test="params.employeeId != null">
+      AND pe.employee_id = #{params.employeeId}
+    </if>
+    <if test="params.employeeName != null and params.employeeName != ''">
+      AND e.name = #{params.employeeName}
+    </if>
+  </select>
+
+</mapper>
