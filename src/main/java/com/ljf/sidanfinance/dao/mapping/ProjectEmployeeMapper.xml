@@ -24,10 +24,19 @@
     SELECT * FROM project_employee WHERE project_id = #{projectId} AND employee_id = #{employeeId}
   </select>
 
-  <select id="getList" resultType="java.lang.Integer">
-    SELECT e.id,e.name
+  <select id="getList" resultType="java.util.HashMap">
+    SELECT e.id,e.name,
+           CASE e.type
+           WHEN 0 THEN '管理'
+           WHEN 1 THEN '木工'
+           WHEN 2 THEN '瓦工'
+           WHEN 3 THEN '油工'
+           WHEN 4 THEN '电工'
+           WHEN 5 THEN '小工'
+           WHEN 6 THEN '抹灰工'
+           END AS workType
     FROM project_employee pe
-    LEFT JOIN emoployee e ON e.id = pe.employee_id
+    LEFT JOIN employee e ON e.id = pe.employee_id
     WHERE 1 = 1
     <if test="params.projectId != null">
       AND pe.project_id = #{params.projectId}
