@@ -12,4 +12,6 @@ public interface EmployeeMapper extends Mapper<Employee> {
 
     public abstract List<Map<String,String>> getList(@Param("params") JSONObject params);
 
+    public abstract List<Map<String,String>> getProjectList(@Param("params") JSONObject params);
+
 }

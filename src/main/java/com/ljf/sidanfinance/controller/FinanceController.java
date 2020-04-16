@@ -59,9 +59,21 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
+    @RequestMapping(value="/employee/list/project",method = RequestMethod.GET)
+    public void employeeListProject(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.getEmployeeListProject(getParams(request));
+        returnInfo(response,info);
+    }
+
     @RequestMapping(value="/employee/add",method = RequestMethod.POST)
     public void addEmployee(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.addEmployee(getParams(request));
+        returnInfo(response,info);
+    }
+
+    @RequestMapping(value="/attendance/year",method = RequestMethod.GET)
+    public void attendanceYear(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.attendanceYear(getParams(request));
         returnInfo(response,info);
     }
 

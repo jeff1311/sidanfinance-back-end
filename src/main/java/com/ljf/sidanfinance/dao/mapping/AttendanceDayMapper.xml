@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ljf.sidanfinance.dao.mapper.AttendanceDayMapper">
+  <resultMap id="BaseResultMap" type="com.ljf.sidanfinance.dao.model.AttendanceDay">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <constructor>
+      <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="employee_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="project_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="attend" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="hour" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="date" javaType="java.util.Date" jdbcType="DATE" />
+      <arg column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="date_update" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+    </constructor>
+  </resultMap>
+  <sql id="Base_Column_List">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    id, employee_id, project_id, attend, hour, date, remark, date_insert, date_update
+  </sql>
+
+  <select id="getYear" resultType="java.util.HashMap">
+    SELECT DATA_FORMAT(data_insert,'%Y-%m-%d') AS year
+    FROM attendance_day
+    WHERE
+    GROUP BY DATA_FORMAT(data_insert,'%Y-%m-%d')
+  </select>
+
+</mapper>

@@ -30,6 +30,8 @@ public class FinanceServiceImpl implements IFinanceService {
     CalenMapper calenMapper;
     @Autowired
     ProjectEmployeeMapper projectEmployeeMapper;
+    @Autowired
+    AttendanceDayMapper attendanceDayMapper;
 
     @Override
     public JSONObject getIndexData() {
@@ -133,6 +135,15 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
+    public JSONObject getEmployeeListProject(JSONObject params) {
+        List<Map<String, String>> list = employeeMapper.getProjectList(params);
+        PageInfo pageInfo = new PageInfo(list);
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("list", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
+    }
+
+    @Override
     public JSONObject addEmployee(JSONObject params) {
         Employee employee = new Employee();
         employee.setName(params.getString("name"));
@@ -154,6 +165,14 @@ public class FinanceServiceImpl implements IFinanceService {
         }else{
             return Code.FAILURE.toJson();
         }
+    }
+
+    @Override
+    public JSONObject attendanceYear(JSONObject params) {
+        List<Map<String,String>> list = attendanceDayMapper.getYear(params);
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("data", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
     }
 
     @Override
