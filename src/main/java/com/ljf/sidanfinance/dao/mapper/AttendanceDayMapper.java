@@ -10,6 +10,6 @@ import java.util.Map;
 
 public interface AttendanceDayMapper extends Mapper<AttendanceDay> {
 
-    public abstract List<Map<String,String>> getYear(@Param("params")JSONObject params);
+    public abstract List<String> getYear(@Param("params")JSONObject params);
 
 }

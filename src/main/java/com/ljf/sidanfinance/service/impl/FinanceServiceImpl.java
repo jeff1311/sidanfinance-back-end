@@ -169,9 +169,9 @@ public class FinanceServiceImpl implements IFinanceService {
 
     @Override
     public JSONObject attendanceYear(JSONObject params) {
-        List<Map<String,String>> list = attendanceDayMapper.getYear(params);
+        List<String> list = attendanceDayMapper.getYear(params);
         JSONObject info = Code.SUCCESS.toJson();
-        info.put("data", JSON.parseArray(JSON.toJSONString(list)));
+        info.put("list", JSON.parseArray(JSON.toJSONString(list)));
         return info;
     }
 

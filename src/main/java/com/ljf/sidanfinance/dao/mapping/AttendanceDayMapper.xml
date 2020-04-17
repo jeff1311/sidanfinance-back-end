@@ -24,11 +24,17 @@
     id, employee_id, project_id, attend, hour, date, remark, date_insert, date_update
   </sql>
 
-  <select id="getYear" resultType="java.util.HashMap">
-    SELECT DATA_FORMAT(data_insert,'%Y-%m-%d') AS year
+  <select id="getYear" resultType="java.lang.String">
+    SELECT DATE_FORMAT(date_insert,'%Y-%m-%d') AS year
     FROM attendance_day
-    WHERE
-    GROUP BY DATA_FORMAT(data_insert,'%Y-%m-%d')
+    WHERE 1 = 1
+    <if test="params.employeeId != null">
+      AND employee_id = #{params.employeeId}
+    </if>
+    <if test="params.projectId != null">
+      AND project_id = #{params.projectId}
+    </if>
+    GROUP BY DATE_FORMAT(date_insert,'%Y-%m-%d')
   </select>
 
 </mapper>
