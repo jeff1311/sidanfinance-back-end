@@ -24,9 +24,14 @@ public class AttendanceDay {
     private Integer projectId;
 
     /**
-     * 是否出席
+     * 上午（是否出席）
      */
-    private Boolean attend;
+    private Boolean forenoon;
+
+    /**
+     * 下午（是否出席）
+     */
+    private Boolean afternoon;
 
     /**
      * 小时
@@ -55,11 +60,12 @@ public class AttendanceDay {
     @Column(name = "date_update")
     private Date dateUpdate;
 
-    public AttendanceDay(Integer id, Integer employeeId, Integer projectId, Boolean attend, Byte hour, Date date, String remark, Date dateInsert, Date dateUpdate) {
+    public AttendanceDay(Integer id, Integer employeeId, Integer projectId, Boolean forenoon, Boolean afternoon, Byte hour, Date date, String remark, Date dateInsert, Date dateUpdate) {
         this.id = id;
         this.employeeId = employeeId;
         this.projectId = projectId;
-        this.attend = attend;
+        this.forenoon = forenoon;
+        this.afternoon = afternoon;
         this.hour = hour;
         this.date = date;
         this.remark = remark;
@@ -126,21 +132,39 @@ public class AttendanceDay {
     }
 
     /**
-     * 获取是否出席
+     * 获取上午（是否出席）
      *
-     * @return attend - 是否出席
+     * @return forenoon - 上午（是否出席）
      */
-    public Boolean getAttend() {
-        return attend;
+    public Boolean getForenoon() {
+        return forenoon;
     }
 
     /**
-     * 设置是否出席
+     * 设置上午（是否出席）
      *
-     * @param attend 是否出席
+     * @param forenoon 上午（是否出席）
      */
-    public void setAttend(Boolean attend) {
-        this.attend = attend;
+    public void setForenoon(Boolean forenoon) {
+        this.forenoon = forenoon;
+    }
+
+    /**
+     * 获取下午（是否出席）
+     *
+     * @return afternoon - 下午（是否出席）
+     */
+    public Boolean getAfternoon() {
+        return afternoon;
+    }
+
+    /**
+     * 设置下午（是否出席）
+     *
+     * @param afternoon 下午（是否出席）
+     */
+    public void setAfternoon(Boolean afternoon) {
+        this.afternoon = afternoon;
     }
 
     /**

@@ -1,6 +1,7 @@
 package com.ljf.sidanfinance.service.impl;
 
 import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONArray;
 import com.alibaba.fastjson.JSONObject;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
@@ -11,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import tk.mybatis.mapper.entity.Example;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -170,6 +172,11 @@ public class FinanceServiceImpl implements IFinanceService {
     @Override
     public JSONObject attendanceYear(JSONObject params) {
         List<String> list = attendanceDayMapper.getYear(params);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        String thisYear = sdf.format(new Date());
+        if(list.size() == 0 || !list.contains(thisYear)){
+            list.add(thisYear);
+        }
         JSONObject info = Code.SUCCESS.toJson();
         info.put("list", JSON.parseArray(JSON.toJSONString(list)));
         return info;
@@ -177,13 +184,43 @@ public class FinanceServiceImpl implements IFinanceService {
 
     @Override
     public JSONObject attendanceCalendar(JSONObject params) {
-        Calen calendar = new Calen();
-        calendar.setYr(params.getString("year"));
-        calendar.setMm(params.getString("month"));
-        List<Calen> days = calenMapper.select(calendar);
+        List<Map<String,String>> list = attendanceDayMapper.getAttendace(params);
         JSONObject info = Code.SUCCESS.toJson();
-        info.put("calendar",days);
+        info.put("calendar",JSON.parseArray(JSON.toJSONString(list)));
         return info;
+    }
+
+    @Override
+    public JSONObject attendanceCalendarUpdate(JSONObject params) {
+        Integer projectId = params.getInteger("projectId");
+        Integer employeeId = params.getInteger("employeeId");
+        JSONArray days = JSON.parseArray(params.getString("days"));
+        Date now = new Date();
+        for(Object day : days){
+            JSONObject d = JSON.parseObject(String.valueOf(day));
+            AttendanceDay ad = attendanceDayMapper.getByDate(d.getString("date"));
+            if(ad == null){
+                ad = new AttendanceDay();
+                ad.setProjectId(projectId);
+                ad.setEmployeeId(employeeId);
+                ad.setForenoon(d.getBoolean("forenoon"));
+                ad.setAfternoon(d.getBoolean("afternoon"));
+                ad.setHour(d.getByte("hour"));
+                ad.setDate(d.getDate("date"));
+                ad.setDateInsert(now);
+                attendanceDayMapper.insertSelective(ad);
+            }else{
+                ad.setProjectId(projectId);
+                ad.setEmployeeId(employeeId);
+                ad.setForenoon(d.getBoolean("forenoon"));
+                ad.setAfternoon(d.getBoolean("afternoon"));
+                ad.setHour(d.getByte("hour"));
+                ad.setDate(d.getDate("date"));
+                ad.setDateUpdate(now);
+                attendanceDayMapper.updateByPrimaryKeySelective(ad);
+            }
+        }
+        return Code.SUCCESS.toJson();
     }
 
     @Override

@@ -9,7 +9,8 @@
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="employee_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="project_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="attend" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="forenoon" javaType="java.lang.Boolean" jdbcType="BIT" />
+      <arg column="afternoon" javaType="java.lang.Boolean" jdbcType="BIT" />
       <arg column="hour" javaType="java.lang.Byte" jdbcType="TINYINT" />
       <arg column="date" javaType="java.util.Date" jdbcType="DATE" />
       <arg column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
@@ -21,11 +22,12 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, employee_id, project_id, attend, hour, date, remark, date_insert, date_update
+    id, employee_id, project_id, forenoon, afternoon, hour, date, remark, date_insert, 
+    date_update
   </sql>
 
   <select id="getYear" resultType="java.lang.String">
-    SELECT DATE_FORMAT(date_insert,'%Y-%m-%d') AS year
+    SELECT DATE_FORMAT(date,'%Y') AS year
     FROM attendance_day
     WHERE 1 = 1
     <if test="params.employeeId != null">
@@ -34,7 +36,19 @@
     <if test="params.projectId != null">
       AND project_id = #{params.projectId}
     </if>
-    GROUP BY DATE_FORMAT(date_insert,'%Y-%m-%d')
+    GROUP BY DATE_FORMAT(date,'%Y')
+  </select>
+
+  <select id="getByDate" resultMap="BaseResultMap">
+    SELECT * FROM attendance_day WHERE date = #{date}
+  </select>
+
+  <select id="getAttendace" resultType="java.util.HashMap">
+    SELECT c.yr AS year,c.mm AS month,c.dd AS day,c.dt AS date,c.day_of_week AS dayOfWeek,
+	   ad.forenoon AS forenoon,ad.afternoon AS afternoon,ad.hour AS hour
+    FROM calendar c
+    LEFT JOIN attendance_day ad ON ad.date = c.dt
+    WHERE c.yr = #{params.year} AND c.mm = #{params.month}
   </select>
 
 </mapper>
