@@ -39,16 +39,38 @@
     GROUP BY DATE_FORMAT(date,'%Y')
   </select>
 
+  <select id="getYearData" resultType="java.util.HashMap">
+    SELECT DATE_FORMAT(date,'%Y') AS year,DATE_FORMAT(date,'%m') AS month,CAST(SUM(forenoon + afternoon) / 2 AS DECIMAL(10,1)) AS day,SUM(hour) AS hour
+    FROM attendance_day
+    WHERE 1 = 1
+    <if test="params.year != null">
+      AND DATE_FORMAT(date,'%Y') = #{params.year}
+    </if>
+    <if test="params.employeeId != null">
+      AND employee_id = #{params.employeeId}
+    </if>
+    <if test="params.projectId != null">
+      AND project_id = #{params.projectId}
+    </if>
+    GROUP BY DATE_FORMAT(date,'%m')
+  </select>
+
   <select id="getByDate" resultMap="BaseResultMap">
     SELECT * FROM attendance_day WHERE date = #{date}
   </select>
 
   <select id="getAttendace" resultType="java.util.HashMap">
     SELECT c.yr AS year,c.mm AS month,c.dd AS day,c.dt AS date,c.day_of_week AS dayOfWeek,
-	   ad.forenoon AS forenoon,ad.afternoon AS afternoon,ad.hour AS hour
+           IFNULL(t.forenoon,0) AS forenoon,IFNULL(t.afternoon,0) AS afternoon,IFNULL(t.hour,0) AS hour
     FROM calendar c
-    LEFT JOIN attendance_day ad ON ad.date = c.dt
+    LEFT JOIN
+    (
+      SELECT ad.date AS date,IFNULL(ad.forenoon,0) AS forenoon,IFNULL(ad.afternoon,0) AS afternoon,IFNULL(ad.hour,0) AS hour
+      FROM attendance_day ad
+      WHERE ad.employee_id = #{params.employeeId} AND project_id = #{params.projectId}
+    )t ON t.date = c.dt
     WHERE c.yr = #{params.year} AND c.mm = #{params.month}
+    ORDER BY year
   </select>
 
 </mapper>

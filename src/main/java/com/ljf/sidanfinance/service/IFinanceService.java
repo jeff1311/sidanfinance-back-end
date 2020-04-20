@@ -24,6 +24,8 @@ public interface IFinanceService {
 
     public abstract JSONObject attendanceYear(JSONObject params);
 
+    public abstract JSONObject attendanceYearData(JSONObject params);
+
     public abstract JSONObject attendanceCalendar(JSONObject params);
 
     public abstract JSONObject attendanceCalendarUpdate(JSONObject params);

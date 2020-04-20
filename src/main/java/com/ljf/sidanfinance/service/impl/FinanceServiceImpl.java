@@ -34,6 +34,8 @@ public class FinanceServiceImpl implements IFinanceService {
     ProjectEmployeeMapper projectEmployeeMapper;
     @Autowired
     AttendanceDayMapper attendanceDayMapper;
+    @Autowired
+    EmployeeSalaryMapper employeeSalaryMapper;
 
     @Override
     public JSONObject getIndexData() {
@@ -183,6 +185,14 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
+    public JSONObject attendanceYearData(JSONObject params) {
+        List<String> list = attendanceDayMapper.getYearData(params);
+        JSONObject info = Code.SUCCESS.toJson();
+        info.put("list", JSON.parseArray(JSON.toJSONString(list)));
+        return info;
+    }
+
+    @Override
     public JSONObject attendanceCalendar(JSONObject params) {
         List<Map<String,String>> list = attendanceDayMapper.getAttendace(params);
         JSONObject info = Code.SUCCESS.toJson();
@@ -221,6 +231,47 @@ public class FinanceServiceImpl implements IFinanceService {
             }
         }
         return Code.SUCCESS.toJson();
+    }
+
+    public void salary(Integer employeeId,Integer projectId,String year,String month){
+        //工资计算公式（（工时 / 6 + 工日） * 工价） + 奖金 - 支款）
+        JSONObject params = new JSONObject();
+        params.put("employeeId",employeeId);
+        params.put("projectId",projectId);
+        params.put("year",year);
+        List<String> list = attendanceDayMapper.getYearData(params);
+        JSONArray yearList = JSON.parseArray(JSON.toJSONString(list));
+        for(Object y : yearList){
+            //工日
+            JSONObject yr = JSON.parseObject(String.valueOf(y));
+            Double days = yr.getDouble("day");
+            //工时
+            Integer hours = yr.getInteger("hour");
+
+            EmployeeSalary es = employeeSalaryMapper.getMonthData(employeeId, projectId, year, month);
+            if(es == null){
+                es.setDay(days);
+                es.setHour(hours);
+                //工价
+//                es.setPrice();
+                //奖金
+                //支款
+                //应发工资
+                //实发工资
+                es = new EmployeeSalary();
+                es.setDateInsert(new Date());
+                employeeSalaryMapper.insertSelective(es);
+            }else{
+                //工价
+
+                //奖金
+                //支款
+                //应发工资
+                //实发工资
+                es.setDateUpdate(new Date());
+                employeeSalaryMapper.updateByPrimaryKeySelective(es);
+            }
+        }
     }
 
     @Override

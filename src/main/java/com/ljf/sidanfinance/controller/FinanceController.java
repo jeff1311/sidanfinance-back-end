@@ -77,6 +77,12 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
+    @RequestMapping(value="/attendance/year/data",method = RequestMethod.GET)
+    public void attendanceYearData(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.attendanceYearData(getParams(request));
+        returnInfo(response,info);
+    }
+
     @RequestMapping(value="/attendance/calendar",method = RequestMethod.GET)
     public void attendanceCalendar(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.attendanceCalendar(getParams(request));
