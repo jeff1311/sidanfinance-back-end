@@ -18,4 +18,6 @@ public interface AttendanceDayMapper extends Mapper<AttendanceDay> {
 
     public abstract List<Map<String,String>> getAttendace(@Param("params")JSONObject params);
 
+    public abstract Map<String,String> sumMonth(@Param("params")JSONObject params);
+
 }

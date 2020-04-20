@@ -30,6 +30,8 @@ public interface IFinanceService {
 
     public abstract JSONObject attendanceCalendarUpdate(JSONObject params);
 
+    public abstract JSONObject attendanceSalaryUpdate(JSONObject params);
+
     public abstract JSONObject projectAddEmp(JSONObject params);
 
     public abstract JSONObject projectEmpList(JSONObject params);

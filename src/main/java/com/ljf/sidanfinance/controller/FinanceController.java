@@ -95,6 +95,12 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
+    @RequestMapping(value="/attendance/salary/update",method = RequestMethod.POST)
+    public void attendanceSalaryUpdate(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.attendanceSalaryUpdate(getParams(request));
+        returnInfo(response,info);
+    }
+
     @RequestMapping(value="/project/cost/employee/add",method = RequestMethod.POST)
     public void projectAddEmp(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.projectAddEmp(getParams(request));

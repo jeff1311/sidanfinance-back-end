@@ -67,10 +67,20 @@
     (
       SELECT ad.date AS date,IFNULL(ad.forenoon,0) AS forenoon,IFNULL(ad.afternoon,0) AS afternoon,IFNULL(ad.hour,0) AS hour
       FROM attendance_day ad
-      WHERE ad.employee_id = #{params.employeeId} AND project_id = #{params.projectId}
+      WHERE ad.employee_id = #{params.employeeId} AND ad.project_id = #{params.projectId}
     )t ON t.date = c.dt
     WHERE c.yr = #{params.year} AND c.mm = #{params.month}
     ORDER BY year
+  </select>
+
+  <select id="sumMonth" resultType="java.util.HashMap">
+    SELECT CAST(IFNULL((SUM(forenoon) + SUM(afternoon)) / 2,0)  AS DECIMAL(10,1)) AS day, IFNULL(SUM(hour),0) AS hour
+    FROM attendance_day
+    WHERE employee_id = #{params.employeeId}
+    AND project_id = #{params.projectId}
+    AND DATE_FORMAT(date,'%Y') = #{params.year}
+    AND DATE_FORMAT(date,'%m') = #{params.month}
+    GROUP BY DATE_FORMAT(date,'%m')
   </select>
 
 </mapper>

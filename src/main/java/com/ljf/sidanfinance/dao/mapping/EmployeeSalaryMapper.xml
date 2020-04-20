@@ -31,8 +31,11 @@
     year, month, date_insert, date_update, delete_mark
   </sql>
 
+  <select id="getByYear" resultMap="BaseResultMap">
+    SELECT * FROM employee_salary WHERE employee_id = #{employeeId} AND project_id = #{projectId} AND year = #{year}
+  </select>
 
-  <select id="getMonthData" resultMap="BaseResultMap">
+  <select id="getByMonth" resultMap="BaseResultMap">
     SELECT * FROM employee_salary WHERE employee_id = #{employeeId} AND project_id = #{projectId} AND year = #{year} AND month = #{month}
   </select>
 
