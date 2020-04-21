@@ -23,21 +23,23 @@
 
     <select id="getList" resultType="java.util.HashMap">
         SELECT e.id AS id,e.name AS name,CASE e.type WHEN 0 THEN '管理'
-                                               WHEN 1 THEN '木工'
-                                               WHEN 2 THEN '瓦工'
-                                               WHEN 3 THEN '油工'
-                                               WHEN 4 THEN '电工'
-                                               WHEN 5 THEN '小工'
-                                               WHEN 6 THEN '抹灰工'
-                                               END AS typeName,
+                                                     WHEN 1 THEN '木工'
+                                                     WHEN 2 THEN '瓦工'
+                                                     WHEN 3 THEN '油工'
+                                                     WHEN 4 THEN '电工'
+                                                     WHEN 5 THEN '小工'
+                                                     WHEN 6 THEN '抹灰工'
+                                         END AS typeName,
                e.type AS type,DATE_FORMAT(e.date_insert,'%Y-%m-%d %H:%i:%s') AS dateInsert,
-               CAST(IFNULL(SUM(es.day) / 2,0)  AS DECIMAL(10,1)) AS day,
-               IFNULL(SUM(es.hour),0) AS hour,
-               IFNULL(SUM(es.amount),0) AS income,
-               IFNULL(COUNT(pe.id),0) AS projectNum
+               IFNULL(SUM(es.day),0) AS day,IFNULL(SUM(es.hour),0) AS hour,
+               CAST(IFNULL(SUM(es.amount),0) AS DECIMAL(15,2)) AS income,
+               IFNULL(pe.project_num,0) AS projectNum
         FROM employee e
         LEFT JOIN employee_salary es ON es.employee_id = e.id
-        LEFT JOIN project_employee pe ON pe.employee_id = e.id
+        LEFT JOIN
+        (
+        SELECT employee_id,COUNT(*) AS project_num FROM project_employee GROUP BY employee_id
+        )pe ON pe.employee_id = e.id
         WHERE e.delete_mark = 0
         <if test="params.name != null and params.name != ''">
             AND e.name like CONCAT('%',#{params.name},'%')
@@ -53,11 +55,11 @@
         SELECT e.id AS employeeId,e.name AS employeeName,e.type AS workType,p.id AS projectId,p.name AS projectName,
                DATE_FORMAT(p.start_date,'%Y-%m-%d') AS startDate,DATE_FORMAT(p.end_date,'%Y-%m-%d') AS endDate,
                p.no AS projectNo,CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,c.name AS companyName
-        FROM employee e
-        LEFT JOIN project_employee pe ON pe.employee_id = e.id
+        FROM project_employee pe
+        LEFT JOIN employee e ON e.id = pe.employee_id
         LEFT JOIN project p ON p.id = pe.project_id
         LEFT JOIN company c ON c.id = p.company_id
-        WHERE e.delete_mark = 0
+        WHERE pe.delete_mark = 0
         <if test="params.employeeId != null and params.employeeId != ''">
             AND e.id = #{params.employeeId}
         </if>
