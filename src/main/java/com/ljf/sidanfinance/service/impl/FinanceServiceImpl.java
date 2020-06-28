@@ -61,7 +61,9 @@ public class FinanceServiceImpl implements IFinanceService {
         Project project = new Project();
         project.setName(params.getString("projectName"));
         project.setNo(params.getString("projectNo"));
-        project.setCompanyId(params.getInteger("companyId"));
+        project.setContractNo(params.getString("contractNo"));
+        project.setCompanyName(params.getString("companyName"));
+        project.setGroupName(params.getString("groupName"));
         project.setContractSignDate(params.getDate("signDate"));
         Date startDate = params.getDate("startDate");
         Date endDate = params.getDate("endDate");
@@ -75,6 +77,11 @@ public class FinanceServiceImpl implements IFinanceService {
         project.setTotalPrice(params.getDouble("totalPrice"));
         int result = 0;
         Integer projectId = params.getInteger("projectId");
+        project.setManager(params.getInteger("manager"));
+        project.setGeneralManager(params.getInteger("generalManager"));
+        project.setProvince(params.getString("province"));
+        project.setCity(params.getString("city"));
+        project.setStatus(params.getByte("status"));
         if(projectId != null){
             project.setId(projectId);
             project.setDateUpdate(new Date());

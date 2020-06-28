@@ -1,10 +1,7 @@
 package com.ljf.sidanfinance.dao.model;
 
-import javax.persistence.Column;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
 import java.util.Date;
+import javax.persistence.*;
 
 @Table(name = "project")
 public class Project {
@@ -12,7 +9,6 @@ public class Project {
      * ID
      */
     @Id
-    @GeneratedValue(generator = "JDBC")
     private Integer id;
 
     /**
@@ -32,10 +28,16 @@ public class Project {
     private String contractNo;
 
     /**
-     * 合同甲方ID
+     * 合同甲方名称
      */
-    @Column(name = "company_id")
-    private Integer companyId;
+    @Column(name = "company_name")
+    private String companyName;
+
+    /**
+     * 合同甲方集团名称
+     */
+    @Column(name = "group_name")
+    private String groupName;
 
     /**
      * 合同签订时间
@@ -67,6 +69,32 @@ public class Project {
     private Double totalPrice;
 
     /**
+     * 项目经理
+     */
+    private Integer manager;
+
+    /**
+     * 区域总
+     */
+    @Column(name = "general_manager")
+    private Integer generalManager;
+
+    /**
+     * 所在省
+     */
+    private String province;
+
+    /**
+     * 所在市
+     */
+    private String city;
+
+    /**
+     * 状态 1=待进场、2=施工中 、3=已完成
+     */
+    private Byte status;
+
+    /**
      * 插入时间
      */
     @Column(name = "date_insert")
@@ -84,17 +112,23 @@ public class Project {
     @Column(name = "delete_mark")
     private Integer deleteMark;
 
-    public Project(Integer id, String name, String no, String contractNo, Integer companyId, Date contractSignDate, Date startDate, Date endDate, Integer months, Double totalPrice, Date dateInsert, Date dateUpdate, Integer deleteMark) {
+    public Project(Integer id, String name, String no, String contractNo, String companyName, String groupName, Date contractSignDate, Date startDate, Date endDate, Integer months, Double totalPrice, Integer manager, Integer generalManager, String province, String city, Byte status, Date dateInsert, Date dateUpdate, Integer deleteMark) {
         this.id = id;
         this.name = name;
         this.no = no;
         this.contractNo = contractNo;
-        this.companyId = companyId;
+        this.companyName = companyName;
+        this.groupName = groupName;
         this.contractSignDate = contractSignDate;
         this.startDate = startDate;
         this.endDate = endDate;
         this.months = months;
         this.totalPrice = totalPrice;
+        this.manager = manager;
+        this.generalManager = generalManager;
+        this.province = province;
+        this.city = city;
+        this.status = status;
         this.dateInsert = dateInsert;
         this.dateUpdate = dateUpdate;
         this.deleteMark = deleteMark;
@@ -177,21 +211,39 @@ public class Project {
     }
 
     /**
-     * 获取合同甲方ID
+     * 获取合同甲方名称
      *
-     * @return company_id - 合同甲方ID
+     * @return company_name - 合同甲方名称
      */
-    public Integer getCompanyId() {
-        return companyId;
+    public String getCompanyName() {
+        return companyName;
     }
 
     /**
-     * 设置合同甲方ID
+     * 设置合同甲方名称
      *
-     * @param companyId 合同甲方ID
+     * @param companyName 合同甲方名称
      */
-    public void setCompanyId(Integer companyId) {
-        this.companyId = companyId;
+    public void setCompanyName(String companyName) {
+        this.companyName = companyName == null ? null : companyName.trim();
+    }
+
+    /**
+     * 获取合同甲方集团名称
+     *
+     * @return group_name - 合同甲方集团名称
+     */
+    public String getGroupName() {
+        return groupName;
+    }
+
+    /**
+     * 设置合同甲方集团名称
+     *
+     * @param groupName 合同甲方集团名称
+     */
+    public void setGroupName(String groupName) {
+        this.groupName = groupName == null ? null : groupName.trim();
     }
 
     /**
@@ -285,6 +337,96 @@ public class Project {
     }
 
     /**
+     * 获取项目经理
+     *
+     * @return manager - 项目经理
+     */
+    public Integer getManager() {
+        return manager;
+    }
+
+    /**
+     * 设置项目经理
+     *
+     * @param manager 项目经理
+     */
+    public void setManager(Integer manager) {
+        this.manager = manager;
+    }
+
+    /**
+     * 获取区域总
+     *
+     * @return general_manager - 区域总
+     */
+    public Integer getGeneralManager() {
+        return generalManager;
+    }
+
+    /**
+     * 设置区域总
+     *
+     * @param generalManager 区域总
+     */
+    public void setGeneralManager(Integer generalManager) {
+        this.generalManager = generalManager;
+    }
+
+    /**
+     * 获取所在省
+     *
+     * @return province - 所在省
+     */
+    public String getProvince() {
+        return province;
+    }
+
+    /**
+     * 设置所在省
+     *
+     * @param province 所在省
+     */
+    public void setProvince(String province) {
+        this.province = province == null ? null : province.trim();
+    }
+
+    /**
+     * 获取所在市
+     *
+     * @return city - 所在市
+     */
+    public String getCity() {
+        return city;
+    }
+
+    /**
+     * 设置所在市
+     *
+     * @param city 所在市
+     */
+    public void setCity(String city) {
+        this.city = city == null ? null : city.trim();
+    }
+
+    /**
+     * 获取状态 1=待进场、2=施工中 、3=已完成
+     *
+     * @return status - 状态 1=待进场、2=施工中 、3=已完成
+     */
+    public Byte getStatus() {
+        return status;
+    }
+
+    /**
+     * 设置状态 1=待进场、2=施工中 、3=已完成
+     *
+     * @param status 状态 1=待进场、2=施工中 、3=已完成
+     */
+    public void setStatus(Byte status) {
+        this.status = status;
+    }
+
+    /**
      * 获取插入时间
      *
      * @return date_insert - 插入时间
@@ -320,10 +462,20 @@ public class Project {
         this.dateUpdate = dateUpdate;
     }
 
+    /**
+     * 获取删除标志
+     *
+     * @return delete_mark - 删除标志
+     */
     public Integer getDeleteMark() {
         return deleteMark;
     }
 
+    /**
+     * 设置删除标志
+     *
+     * @param deleteMark 删除标志
+     */
     public void setDeleteMark(Integer deleteMark) {
         this.deleteMark = deleteMark;
     }

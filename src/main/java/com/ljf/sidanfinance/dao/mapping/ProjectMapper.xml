@@ -10,12 +10,18 @@
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="no" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="contract_no" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="company_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="company_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="group_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="contract_sign_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="start_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="months" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="total_price" javaType="java.lang.Double" jdbcType="DOUBLE" />
+      <arg column="manager" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="general_manager" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="province" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="city" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="status" javaType="java.lang.Byte" jdbcType="TINYINT" />
       <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="date_update" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="delete_mark" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -25,8 +31,9 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, no, contract_no, company_id, contract_sign_date, start_date, end_date, 
-    months, total_price, date_insert, date_update, delete_mark
+    id, name, no, contract_no, company_name, group_name, contract_sign_date, start_date, 
+    end_date, months, total_price, manager, general_manager, province, city, status, 
+    date_insert, date_update, delete_mark
   </sql>
 
   <select id="getList" resultType="java.util.HashMap">
