@@ -57,6 +57,14 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
+    public JSONObject getProjectInfo(String projectId) {
+        JSONObject info = projectMapper.getInfo(projectId);
+        JSONObject result = Code.SUCCESS.toJson();
+        result.put("info", info);
+        return result;
+    }
+
+    @Override
     public JSONObject addProject(JSONObject params) {
         Project project = new Project();
         project.setName(params.getString("projectName"));

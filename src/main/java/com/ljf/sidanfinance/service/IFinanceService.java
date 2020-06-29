@@ -8,6 +8,8 @@ public interface IFinanceService {
 
     public abstract JSONObject getProjectList(JSONObject params);
 
+    public abstract JSONObject getProjectInfo(String projectId);
+
     public abstract JSONObject addProject(JSONObject params);
 
     public abstract JSONObject getCompanyList(JSONObject params);

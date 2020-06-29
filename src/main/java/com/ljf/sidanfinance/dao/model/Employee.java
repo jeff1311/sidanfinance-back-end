@@ -17,7 +17,46 @@ public class Employee {
     private String name;
 
     /**
-     * 工种
+     * 性别
+     */
+    private Byte gender;
+
+    /**
+     * 手机
+     */
+    private String phone;
+
+    /**
+     * 身份证号
+     */
+    @Column(name = "cert_no")
+    private String certNo;
+
+    /**
+     * 银行卡号
+     */
+    @Column(name = "bank_no")
+    private String bankNo;
+
+    /**
+     * 工长
+     */
+    @Column(name = "superior_id")
+    private Integer superiorId;
+
+    /**
+     * 项目经理
+     */
+    private Integer manager;
+
+    /**
+     * 开户银行
+     */
+    @Column(name = "bank_name")
+    private String bankName;
+
+    /**
+     * 工种 0=管理，1=木工，2=瓦工，3=油工，4=电工，5=小工，6=抹灰工
      */
     private Integer type;
 
@@ -39,9 +78,16 @@ public class Employee {
     @Column(name = "delete_mark")
     private Integer deleteMark;
 
-    public Employee(Integer id, String name, Integer type, Date dateInsert, Date dateUpdate, Integer deleteMark) {
+    public Employee(Integer id, String name, Byte gender, String phone, String certNo, String bankNo, Integer superiorId, Integer manager, String bankName, Integer type, Date dateInsert, Date dateUpdate, Integer deleteMark) {
         this.id = id;
         this.name = name;
+        this.gender = gender;
+        this.phone = phone;
+        this.certNo = certNo;
+        this.bankNo = bankNo;
+        this.superiorId = superiorId;
+        this.manager = manager;
+        this.bankName = bankName;
         this.type = type;
         this.dateInsert = dateInsert;
         this.dateUpdate = dateUpdate;
@@ -89,18 +135,144 @@ public class Employee {
     }
 
     /**
-     * 获取工种
+     * 获取性别
      *
-     * @return type - 工种
+     * @return gender - 性别
+     */
+    public Byte getGender() {
+        return gender;
+    }
+
+    /**
+     * 设置性别
+     *
+     * @param gender 性别
+     */
+    public void setGender(Byte gender) {
+        this.gender = gender;
+    }
+
+    /**
+     * 获取手机
+     *
+     * @return phone - 手机
+     */
+    public String getPhone() {
+        return phone;
+    }
+
+    /**
+     * 设置手机
+     *
+     * @param phone 手机
+     */
+    public void setPhone(String phone) {
+        this.phone = phone == null ? null : phone.trim();
+    }
+
+    /**
+     * 获取身份证号
+     *
+     * @return cert_no - 身份证号
+     */
+    public String getCertNo() {
+        return certNo;
+    }
+
+    /**
+     * 设置身份证号
+     *
+     * @param certNo 身份证号
+     */
+    public void setCertNo(String certNo) {
+        this.certNo = certNo == null ? null : certNo.trim();
+    }
+
+    /**
+     * 获取银行卡号
+     *
+     * @return bank_no - 银行卡号
+     */
+    public String getBankNo() {
+        return bankNo;
+    }
+
+    /**
+     * 设置银行卡号
+     *
+     * @param bankNo 银行卡号
+     */
+    public void setBankNo(String bankNo) {
+        this.bankNo = bankNo == null ? null : bankNo.trim();
+    }
+
+    /**
+     * 获取工长
+     *
+     * @return superior_id - 工长
+     */
+    public Integer getSuperiorId() {
+        return superiorId;
+    }
+
+    /**
+     * 设置工长
+     *
+     * @param superiorId 工长
+     */
+    public void setSuperiorId(Integer superiorId) {
+        this.superiorId = superiorId;
+    }
+
+    /**
+     * 获取项目经理
+     *
+     * @return manager - 项目经理
+     */
+    public Integer getManager() {
+        return manager;
+    }
+
+    /**
+     * 设置项目经理
+     *
+     * @param manager 项目经理
+     */
+    public void setManager(Integer manager) {
+        this.manager = manager;
+    }
+
+    /**
+     * 获取开户银行
+     *
+     * @return bank_name - 开户银行
+     */
+    public String getBankName() {
+        return bankName;
+    }
+
+    /**
+     * 设置开户银行
+     *
+     * @param bankName 开户银行
+     */
+    public void setBankName(String bankName) {
+        this.bankName = bankName == null ? null : bankName.trim();
+    }
+
+    /**
+     * 获取工种 0=管理，1=木工，2=瓦工，3=油工，4=电工，5=小工，6=抹灰工
+     *
+     * @return type - 工种 0=管理，1=木工，2=瓦工，3=油工，4=电工，5=小工，6=抹灰工
      */
     public Integer getType() {
         return type;
     }
 
     /**
-     * 设置工种
+     * 设置工种 0=管理，1=木工，2=瓦工，3=油工，4=电工，5=小工，6=抹灰工
      *
-     * @param type 工种
+     * @param type 工种 0=管理，1=木工，2=瓦工，3=油工，4=电工，5=小工，6=抹灰工
      */
     public void setType(Integer type) {
         this.type = type;

@@ -8,6 +8,13 @@
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="gender" javaType="java.lang.Byte" jdbcType="TINYINT" />
+      <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="cert_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="bank_no" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="superior_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="manager" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="bank_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="type" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="date_update" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -18,7 +25,8 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, type, date_insert, date_update, delete_mark
+    id, name, gender, phone, cert_no, bank_no, superior_id, manager, bank_name, type, 
+    date_insert, date_update, delete_mark
   </sql>
 
     <select id="getList" resultType="java.util.HashMap">

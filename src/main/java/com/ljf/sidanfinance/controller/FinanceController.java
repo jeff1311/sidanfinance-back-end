@@ -31,6 +31,13 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
+    @RequestMapping(value="/project/info",method = RequestMethod.GET)
+    public void projectInfo(HttpServletRequest request, HttpServletResponse response){
+        String projectId = request.getParameter("projectId");
+        JSONObject info = financeService.getProjectInfo(projectId);
+        returnInfo(response,info);
+    }
+
     @RequestMapping(value="/project/add",method = RequestMethod.POST)
     public void addProject(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.addProject(getParams(request));
