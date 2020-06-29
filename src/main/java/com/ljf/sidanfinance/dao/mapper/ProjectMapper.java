@@ -25,6 +25,6 @@ public interface ProjectMapper extends Mapper<Project> {
     })
     public abstract List<Project> getAll();
 
-    public abstract JSONObject getInfo(@Param("id")String id);
+    public abstract JSONObject getInfo(@Param("id") String id);
 
 }

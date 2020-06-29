@@ -146,6 +146,14 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
+    public JSONObject getEmployeeInfo(String employeeId) {
+        JSONObject info = employeeMapper.getInfo(employeeId);
+        JSONObject result = Code.SUCCESS.toJson();
+        result.put("info", info);
+        return result;
+    }
+
+    @Override
     public JSONObject getEmployeeListAll(JSONObject params) {
         List<Map<String, String>> list = employeeMapper.getList(params);
         PageInfo pageInfo = new PageInfo(list);
@@ -167,6 +175,13 @@ public class FinanceServiceImpl implements IFinanceService {
     public JSONObject addEmployee(JSONObject params) {
         Employee employee = new Employee();
         employee.setName(params.getString("name"));
+        employee.setGender(params.getByte("gender"));
+        employee.setPhone(params.getString("phone"));
+        employee.setCertNo(params.getString("certNo"));
+        employee.setBankNo(params.getString("bankNo"));
+        employee.setSuperior(params.getInteger("superior"));
+        employee.setManager(params.getInteger("manager"));
+        employee.setBankName(params.getString("bankName"));
         employee.setType(params.getInteger("type"));
         int result = 0;
         Integer employeeId = params.getInteger("employeeId");

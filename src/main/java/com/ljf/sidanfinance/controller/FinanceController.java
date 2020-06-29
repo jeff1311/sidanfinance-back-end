@@ -62,6 +62,13 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
+    @RequestMapping(value="/employee/info",method = RequestMethod.GET)
+    public void employeeInfo(HttpServletRequest request, HttpServletResponse response){
+        String employeeId = request.getParameter("employeeId");
+        JSONObject info = financeService.getEmployeeInfo(employeeId);
+        returnInfo(response,info);
+    }
+
     @RequestMapping(value="/employee/list/all",method = RequestMethod.GET)
     public void employeeListAll(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.getEmployeeListAll(getParams(request));

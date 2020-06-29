@@ -12,7 +12,7 @@
       <arg column="phone" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="cert_no" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="bank_no" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="superior_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="superior" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="manager" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="bank_name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="type" javaType="java.lang.Integer" jdbcType="INTEGER" />
@@ -25,24 +25,29 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, gender, phone, cert_no, bank_no, superior_id, manager, bank_name, type, 
+    id, name, gender, phone, cert_no, bank_no, superior, manager, bank_name, type,
     date_insert, date_update, delete_mark
   </sql>
 
     <select id="getList" resultType="java.util.HashMap">
-        SELECT e.id AS id,e.name AS name,CASE e.type WHEN 0 THEN '管理'
-                                                     WHEN 1 THEN '木工'
-                                                     WHEN 2 THEN '瓦工'
-                                                     WHEN 3 THEN '油工'
-                                                     WHEN 4 THEN '电工'
-                                                     WHEN 5 THEN '小工'
-                                                     WHEN 6 THEN '抹灰工'
-                                         END AS typeName,
+        SELECT e.id,e.name,CASE e.gender WHEN 1 THEN '男' WHEN 2 THEN '女' END AS gender,
+               e.phone,e.cert_no AS certNo,e.bank_no AS bankNo,e2.name AS superiorName,
+               e3.name AS managerName,e.bank_name AS bankName,
+               CASE e.type WHEN 0 THEN '管理'
+               WHEN 1 THEN '木工'
+               WHEN 2 THEN '瓦工'
+               WHEN 3 THEN '油工'
+               WHEN 4 THEN '电工'
+               WHEN 5 THEN '小工'
+               WHEN 6 THEN '抹灰工'
+               END AS typeName,
                e.type AS type,DATE_FORMAT(e.date_insert,'%Y-%m-%d %H:%i:%s') AS dateInsert,
                IFNULL(SUM(es.day),0) AS day,IFNULL(SUM(es.hour),0) AS hour,
                CAST(IFNULL(SUM(es.amount),0) AS DECIMAL(15,2)) AS income,
                IFNULL(pe.project_num,0) AS projectNum
         FROM employee e
+        LEFT JOIN employee e2 ON e2.id = e.superior
+        LEFT JOIN employee e3 ON e3.id = e.manager
         LEFT JOIN employee_salary es ON es.employee_id = e.id
         LEFT JOIN
         (
@@ -72,6 +77,26 @@
             AND e.id = #{params.employeeId}
         </if>
         ORDER BY pe.date_insert DESC
+    </select>
+
+    <select id="getInfo" resultType="com.alibaba.fastjson.JSONObject">
+        SELECT e.id,e.name,e.gender,e.phone,e.cert_no AS certNo,e.bank_no AS bankNo,
+               e.superior AS superiorId,e2.name AS superiorName,e.manager AS managerId,
+               e3.name AS managerName,e.bank_name AS bankName,
+               CASE e.type WHEN 0 THEN '管理'
+               WHEN 1 THEN '木工'
+               WHEN 2 THEN '瓦工'
+               WHEN 3 THEN '油工'
+               WHEN 4 THEN '电工'
+               WHEN 5 THEN '小工'
+               WHEN 6 THEN '抹灰工'
+               END AS typeName,
+               e.type AS type,DATE_FORMAT(e.date_insert,'%Y-%m-%d %H:%i:%s') AS dateInsert
+        FROM employee e
+        LEFT JOIN employee e2 ON e2.id = e.superior
+        LEFT JOIN employee e3 ON e3.id = e.manager
+        WHERE e.delete_mark = 0
+        AND e.id = ${id}
     </select>
 
 </mapper>

@@ -41,8 +41,8 @@ public class Employee {
     /**
      * 工长
      */
-    @Column(name = "superior_id")
-    private Integer superiorId;
+    @Column(name = "superior")
+    private Integer superior;
 
     /**
      * 项目经理
@@ -78,14 +78,14 @@ public class Employee {
     @Column(name = "delete_mark")
     private Integer deleteMark;
 
-    public Employee(Integer id, String name, Byte gender, String phone, String certNo, String bankNo, Integer superiorId, Integer manager, String bankName, Integer type, Date dateInsert, Date dateUpdate, Integer deleteMark) {
+    public Employee(Integer id, String name, Byte gender, String phone, String certNo, String bankNo, Integer superior, Integer manager, String bankName, Integer type, Date dateInsert, Date dateUpdate, Integer deleteMark) {
         this.id = id;
         this.name = name;
         this.gender = gender;
         this.phone = phone;
         this.certNo = certNo;
         this.bankNo = bankNo;
-        this.superiorId = superiorId;
+        this.superior = superior;
         this.manager = manager;
         this.bankName = bankName;
         this.type = type;
@@ -211,17 +211,17 @@ public class Employee {
      *
      * @return superior_id - 工长
      */
-    public Integer getSuperiorId() {
-        return superiorId;
+    public Integer getSuperior() {
+        return superior;
     }
 
     /**
      * 设置工长
      *
-     * @param superiorId 工长
+     * @param superior 工长
      */
-    public void setSuperiorId(Integer superiorId) {
-        this.superiorId = superiorId;
+    public void setSuperior(Integer superior) {
+        this.superior = superior;
     }
 
     /**
