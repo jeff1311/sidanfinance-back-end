@@ -6,18 +6,11 @@ import org.apache.ibatis.annotations.Param;
 import tk.mybatis.mapper.common.Mapper;
 
 import java.util.List;
-import java.util.Map;
 
 public interface AttendanceDayMapper extends Mapper<AttendanceDay> {
 
-    public abstract List<String> getYear(@Param("params")JSONObject params);
+    public abstract List<JSONObject> getList(@Param("params")JSONObject params);
 
-    public abstract List<String> getYearData(@Param("params")JSONObject params);
-
-    public abstract AttendanceDay getByDate(@Param("date")String date);
-
-    public abstract List<Map<String,String>> getAttendace(@Param("params")JSONObject params);
-
-    public abstract Map<String,String> sumMonth(@Param("params")JSONObject params);
+    public abstract AttendanceDay getInfo(@Param("id")String attendanceDayId);
 
 }

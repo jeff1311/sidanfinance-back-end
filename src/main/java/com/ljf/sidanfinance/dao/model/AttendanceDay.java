@@ -12,65 +12,52 @@ public class AttendanceDay {
     private Integer id;
 
     /**
-     * 雇员ID
-     */
-    @Column(name = "employee_id")
-    private Integer employeeId;
-
-    /**
-     * 项目ID
+     * 工程ID
      */
     @Column(name = "project_id")
     private Integer projectId;
 
     /**
-     * 上午（是否出席）
+     * 工种
      */
-    private Boolean forenoon;
+    @Column(name = "work_type")
+    private Integer workType;
 
     /**
-     * 下午（是否出席）
+     * 年
      */
-    private Boolean afternoon;
+    private String year;
 
     /**
-     * 小时
+     * 月
      */
-    private Byte hour;
+    private String month;
 
     /**
-     * 日期
+     * 负责人
      */
-    private Date date;
+    @Column(name = "responsible_person")
+    private Integer responsiblePerson;
 
-    /**
-     * 备注
-     */
-    private String remark;
-
-    /**
-     * 插入日期
-     */
     @Column(name = "date_insert")
     private Date dateInsert;
 
-    /**
-     * 更新日期
-     */
     @Column(name = "date_update")
     private Date dateUpdate;
 
-    public AttendanceDay(Integer id, Integer employeeId, Integer projectId, Boolean forenoon, Boolean afternoon, Byte hour, Date date, String remark, Date dateInsert, Date dateUpdate) {
+    @Column(name = "delete_mark")
+    private Byte deleteMark;
+
+    public AttendanceDay(Integer id, Integer projectId, Integer workType, String year, String month, Integer responsiblePerson, Date dateInsert, Date dateUpdate, Byte deleteMark) {
         this.id = id;
-        this.employeeId = employeeId;
         this.projectId = projectId;
-        this.forenoon = forenoon;
-        this.afternoon = afternoon;
-        this.hour = hour;
-        this.date = date;
-        this.remark = remark;
+        this.workType = workType;
+        this.year = year;
+        this.month = month;
+        this.responsiblePerson = responsiblePerson;
         this.dateInsert = dateInsert;
         this.dateUpdate = dateUpdate;
+        this.deleteMark = deleteMark;
     }
 
     public AttendanceDay() {
@@ -96,164 +83,134 @@ public class AttendanceDay {
     }
 
     /**
-     * 获取雇员ID
+     * 获取工程ID
      *
-     * @return employee_id - 雇员ID
-     */
-    public Integer getEmployeeId() {
-        return employeeId;
-    }
-
-    /**
-     * 设置雇员ID
-     *
-     * @param employeeId 雇员ID
-     */
-    public void setEmployeeId(Integer employeeId) {
-        this.employeeId = employeeId;
-    }
-
-    /**
-     * 获取项目ID
-     *
-     * @return project_id - 项目ID
+     * @return project_id - 工程ID
      */
     public Integer getProjectId() {
         return projectId;
     }
 
     /**
-     * 设置项目ID
+     * 设置工程ID
      *
-     * @param projectId 项目ID
+     * @param projectId 工程ID
      */
     public void setProjectId(Integer projectId) {
         this.projectId = projectId;
     }
 
     /**
-     * 获取上午（是否出席）
+     * 获取工种
      *
-     * @return forenoon - 上午（是否出席）
+     * @return work_type - 工种
      */
-    public Boolean getForenoon() {
-        return forenoon;
+    public Integer getWorkType() {
+        return workType;
     }
 
     /**
-     * 设置上午（是否出席）
+     * 设置工种
      *
-     * @param forenoon 上午（是否出席）
+     * @param workType 工种
      */
-    public void setForenoon(Boolean forenoon) {
-        this.forenoon = forenoon;
+    public void setWorkType(Integer workType) {
+        this.workType = workType;
     }
 
     /**
-     * 获取下午（是否出席）
+     * 获取年
      *
-     * @return afternoon - 下午（是否出席）
+     * @return year - 年
      */
-    public Boolean getAfternoon() {
-        return afternoon;
+    public String getYear() {
+        return year;
     }
 
     /**
-     * 设置下午（是否出席）
+     * 设置年
      *
-     * @param afternoon 下午（是否出席）
+     * @param year 年
      */
-    public void setAfternoon(Boolean afternoon) {
-        this.afternoon = afternoon;
+    public void setYear(String year) {
+        this.year = year == null ? null : year.trim();
     }
 
     /**
-     * 获取小时
+     * 获取月
      *
-     * @return hour - 小时
+     * @return month - 月
      */
-    public Byte getHour() {
-        return hour;
+    public String getMonth() {
+        return month;
     }
 
     /**
-     * 设置小时
+     * 设置月
      *
-     * @param hour 小时
+     * @param month 月
      */
-    public void setHour(Byte hour) {
-        this.hour = hour;
+    public void setMonth(String month) {
+        this.month = month == null ? null : month.trim();
     }
 
     /**
-     * 获取日期
+     * 获取负责人
      *
-     * @return date - 日期
+     * @return responsible_person - 负责人
      */
-    public Date getDate() {
-        return date;
+    public Integer getResponsiblePerson() {
+        return responsiblePerson;
     }
 
     /**
-     * 设置日期
+     * 设置负责人
      *
-     * @param date 日期
+     * @param responsiblePerson 负责人
      */
-    public void setDate(Date date) {
-        this.date = date;
+    public void setResponsiblePerson(Integer responsiblePerson) {
+        this.responsiblePerson = responsiblePerson;
     }
 
     /**
-     * 获取备注
-     *
-     * @return remark - 备注
-     */
-    public String getRemark() {
-        return remark;
-    }
-
-    /**
-     * 设置备注
-     *
-     * @param remark 备注
-     */
-    public void setRemark(String remark) {
-        this.remark = remark == null ? null : remark.trim();
-    }
-
-    /**
-     * 获取插入日期
-     *
-     * @return date_insert - 插入日期
+     * @return date_insert
      */
     public Date getDateInsert() {
         return dateInsert;
     }
 
     /**
-     * 设置插入日期
-     *
-     * @param dateInsert 插入日期
+     * @param dateInsert
      */
     public void setDateInsert(Date dateInsert) {
         this.dateInsert = dateInsert;
     }
 
     /**
-     * 获取更新日期
-     *
-     * @return date_update - 更新日期
+     * @return date_update
      */
     public Date getDateUpdate() {
         return dateUpdate;
     }
 
     /**
-     * 设置更新日期
-     *
-     * @param dateUpdate 更新日期
+     * @param dateUpdate
      */
     public void setDateUpdate(Date dateUpdate) {
         this.dateUpdate = dateUpdate;
+    }
+
+    /**
+     * @return delete_mark
+     */
+    public Byte getDeleteMark() {
+        return deleteMark;
+    }
+
+    /**
+     * @param deleteMark
+     */
+    public void setDeleteMark(Byte deleteMark) {
+        this.deleteMark = deleteMark;
     }
 }

@@ -7,80 +7,26 @@
     -->
     <constructor>
       <idArg column="id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="employee_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="project_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
-      <arg column="forenoon" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="afternoon" javaType="java.lang.Boolean" jdbcType="BIT" />
-      <arg column="hour" javaType="java.lang.Byte" jdbcType="TINYINT" />
-      <arg column="date" javaType="java.util.Date" jdbcType="DATE" />
-      <arg column="remark" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="work_type" javaType="java.lang.Integer" jdbcType="INTEGER" />
+      <arg column="year" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="month" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="responsible_person" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="date_insert" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="date_update" javaType="java.util.Date" jdbcType="TIMESTAMP" />
+      <arg column="delete_mark" javaType="java.lang.Byte" jdbcType="TINYINT" />
     </constructor>
   </resultMap>
   <sql id="Base_Column_List">
     <!--
       WARNING - @mbg.generated
     -->
-    id, employee_id, project_id, forenoon, afternoon, hour, date, remark, date_insert, 
-    date_update
+    id, project_id, work_type, year, month, responsible_person, date_insert, date_update, 
+    delete_mark
   </sql>
 
-  <select id="getYear" resultType="java.lang.String">
-    SELECT DATE_FORMAT(date,'%Y') AS year
-    FROM attendance_day
-    WHERE 1 = 1
-    <if test="params.employeeId != null">
-      AND employee_id = #{params.employeeId}
-    </if>
-    <if test="params.projectId != null">
-      AND project_id = #{params.projectId}
-    </if>
-    GROUP BY DATE_FORMAT(date,'%Y')
-  </select>
-
-  <select id="getYearData" resultType="java.util.HashMap">
-    SELECT DATE_FORMAT(date,'%Y') AS year,DATE_FORMAT(date,'%m') AS month,CAST(SUM(forenoon + afternoon) / 2 AS DECIMAL(10,1)) AS day,SUM(hour) AS hour
-    FROM attendance_day
-    WHERE 1 = 1
-    <if test="params.year != null">
-      AND DATE_FORMAT(date,'%Y') = #{params.year}
-    </if>
-    <if test="params.employeeId != null">
-      AND employee_id = #{params.employeeId}
-    </if>
-    <if test="params.projectId != null">
-      AND project_id = #{params.projectId}
-    </if>
-    GROUP BY DATE_FORMAT(date,'%m')
-  </select>
-
-  <select id="getByDate" resultMap="BaseResultMap">
-    SELECT * FROM attendance_day WHERE date = #{date}
-  </select>
-
-  <select id="getAttendace" resultType="java.util.HashMap">
-    SELECT c.yr AS year,c.mm AS month,c.dd AS day,c.dt AS date,c.day_of_week AS dayOfWeek,
-           IFNULL(t.forenoon,0) AS forenoon,IFNULL(t.afternoon,0) AS afternoon,IFNULL(t.hour,0) AS hour
-    FROM calendar c
-    LEFT JOIN
-    (
-      SELECT ad.date AS date,IFNULL(ad.forenoon,0) AS forenoon,IFNULL(ad.afternoon,0) AS afternoon,IFNULL(ad.hour,0) AS hour
-      FROM attendance_day ad
-      WHERE ad.employee_id = #{params.employeeId} AND ad.project_id = #{params.projectId}
-    )t ON t.date = c.dt
-    WHERE c.yr = #{params.year} AND c.mm = #{params.month}
-    ORDER BY year
-  </select>
-
-  <select id="sumMonth" resultType="java.util.HashMap">
-    SELECT CAST(IFNULL((SUM(forenoon) + SUM(afternoon)) / 2,0)  AS DECIMAL(10,1)) AS day, IFNULL(SUM(hour),0) AS hour
-    FROM attendance_day
-    WHERE employee_id = #{params.employeeId}
-    AND project_id = #{params.projectId}
-    AND DATE_FORMAT(date,'%Y') = #{params.year}
-    AND DATE_FORMAT(date,'%m') = #{params.month}
-    GROUP BY DATE_FORMAT(date,'%m')
+  <select id="getInfo" resultMap="BaseResultMap">
+    SELECT * FROM attendance_day WHERE id = #{id}
   </select>
 
 </mapper>

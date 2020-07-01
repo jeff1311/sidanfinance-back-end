@@ -87,35 +87,35 @@ public class FinanceController extends BaseController {
         returnInfo(response,info);
     }
 
-    @RequestMapping(value="/attendance/year",method = RequestMethod.GET)
-    public void attendanceYear(HttpServletRequest request, HttpServletResponse response){
-        JSONObject info = financeService.attendanceYear(getParams(request));
-        returnInfo(response,info);
-    }
-
-    @RequestMapping(value="/attendance/year/data",method = RequestMethod.GET)
-    public void attendanceYearData(HttpServletRequest request, HttpServletResponse response){
-        JSONObject info = financeService.attendanceYearData(getParams(request));
-        returnInfo(response,info);
-    }
-
-    @RequestMapping(value="/attendance/calendar",method = RequestMethod.GET)
-    public void attendanceCalendar(HttpServletRequest request, HttpServletResponse response){
-        JSONObject info = financeService.attendanceCalendar(getParams(request));
-        returnInfo(response,info);
-    }
-
-    @RequestMapping(value="/attendance/calendar/update",method = RequestMethod.POST)
-    public void attendanceCalendarUpdate(HttpServletRequest request, HttpServletResponse response){
-        JSONObject info = financeService.attendanceCalendarUpdate(getParams(request));
-        returnInfo(response,info);
-    }
-
-    @RequestMapping(value="/attendance/salary/update",method = RequestMethod.POST)
-    public void attendanceSalaryUpdate(HttpServletRequest request, HttpServletResponse response){
-        JSONObject info = financeService.attendanceSalaryUpdate(getParams(request));
-        returnInfo(response,info);
-    }
+//    @RequestMapping(value="/attendance/year",method = RequestMethod.GET)
+//    public void attendanceYear(HttpServletRequest request, HttpServletResponse response){
+//        JSONObject info = financeService.attendanceYear(getParams(request));
+//        returnInfo(response,info);
+//    }
+//
+//    @RequestMapping(value="/attendance/year/data",method = RequestMethod.GET)
+//    public void attendanceYearData(HttpServletRequest request, HttpServletResponse response){
+//        JSONObject info = financeService.attendanceYearData(getParams(request));
+//        returnInfo(response,info);
+//    }
+//
+//    @RequestMapping(value="/attendance/calendar",method = RequestMethod.GET)
+//    public void attendanceCalendar(HttpServletRequest request, HttpServletResponse response){
+//        JSONObject info = financeService.attendanceCalendar(getParams(request));
+//        returnInfo(response,info);
+//    }
+//
+//    @RequestMapping(value="/attendance/calendar/update",method = RequestMethod.POST)
+//    public void attendanceCalendarUpdate(HttpServletRequest request, HttpServletResponse response){
+//        JSONObject info = financeService.attendanceCalendarUpdate(getParams(request));
+//        returnInfo(response,info);
+//    }
+//
+//    @RequestMapping(value="/attendance/salary/update",method = RequestMethod.POST)
+//    public void attendanceSalaryUpdate(HttpServletRequest request, HttpServletResponse response){
+//        JSONObject info = financeService.attendanceSalaryUpdate(getParams(request));
+//        returnInfo(response,info);
+//    }
 
     @RequestMapping(value="/project/cost/employee/add",method = RequestMethod.POST)
     public void projectAddEmp(HttpServletRequest request, HttpServletResponse response){
@@ -126,6 +126,18 @@ public class FinanceController extends BaseController {
     @RequestMapping(value="/project/cost/employee/list",method = RequestMethod.GET)
     public void projectEmpList(HttpServletRequest request, HttpServletResponse response){
         JSONObject info = financeService.projectEmpList(getParams(request));
+        returnInfo(response,info);
+    }
+
+    @RequestMapping(value="/attendance/day/list",method = RequestMethod.GET)
+    public void attendanceDayList(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.attendanceDayList(getParams(request));
+        returnInfo(response,info);
+    }
+
+    @RequestMapping(value="/attendance/day/info",method = RequestMethod.GET)
+    public void attendanceDayInfo(HttpServletRequest request, HttpServletResponse response){
+        JSONObject info = financeService.attendanceDayInfo(getParams(request));
         returnInfo(response,info);
     }
 
