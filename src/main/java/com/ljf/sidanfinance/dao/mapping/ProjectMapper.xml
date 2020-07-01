@@ -40,10 +40,13 @@
     SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_name AS companyName,
            p.group_name AS groupName,DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,
            DATE_FORMAT(p.start_date,'%Y-%m-%d') AS startDate,DATE_FORMAT(p.end_date,'%Y-%m-%d') AS endDate, p.months AS months,
-           CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,p.general_manager AS generalManager,p.manager AS manager,
+           CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,p.general_manager AS generalManagerId,p.manager AS managerId,
+           e1.name AS generalManagerName,e2.name AS managerName,
            CASE p.status WHEN 1 THEN '待进场' WHEN 2 THEN '施工中' WHEN 3 THEN '停工中' WHEN 4 THEN '已完成' END AS status
     FROM project p
-    WHERE delete_mark = 0
+    LEFT JOIN employee e1 ON e1.id = p.general_manager
+    LEFT JOIN employee e2 ON e2.id = p.manager
+    WHERE p.delete_mark = 0
     <if test="params.projectName != null and params.projectName != ''">
       AND p.name LIKE CONCAT('%',#{params.projectName},'%')
     </if>
@@ -54,10 +57,12 @@
     SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_name AS companyName,
            p.group_name AS groupName,DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,
            DATE_FORMAT(p.start_date,'%Y-%m-%d') AS startDate,DATE_FORMAT(p.end_date,'%Y-%m-%d') AS endDate, p.months AS months,
-           CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,p.general_manager AS generalManager,p.manager AS manager,
-           p.province,p.city,p.status
+           CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,p.general_manager AS generalManagerId,p.manager AS managerId,
+           e1.name AS generalManagerName,e2.name AS managerName,p.province,p.city,p.status
     FROM project p
-    WHERE delete_mark = 0
+    LEFT JOIN employee e1 ON e1.id = p.general_manager
+    LEFT JOIN employee e2 ON e2.id = p.manager
+    WHERE p.delete_mark = 0
     AND p.id = #{id}
   </select>
 
