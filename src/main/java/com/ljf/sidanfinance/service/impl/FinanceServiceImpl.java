@@ -135,7 +135,9 @@ public class FinanceServiceImpl implements IFinanceService {
 
     @Override
     public JSONObject getEmployeeList(JSONObject params) {
-        PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
+        if(params.getInteger("page") != null){
+            PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
+        }
         List<Map<String, String>> list = employeeMapper.getList(params);
         PageInfo pageInfo = new PageInfo(list);
 //        PageHelper.clearPage();
