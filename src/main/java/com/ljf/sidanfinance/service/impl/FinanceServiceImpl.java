@@ -70,8 +70,7 @@ public class FinanceServiceImpl implements IFinanceService {
         project.setName(params.getString("projectName"));
         project.setNo(params.getString("projectNo"));
         project.setContractNo(params.getString("contractNo"));
-        project.setCompanyName(params.getString("companyName"));
-        project.setGroupName(params.getString("groupName"));
+        project.setCompanyId(params.getInteger("companyId"));
         project.setContractSignDate(params.getDate("signDate"));
         Date startDate = params.getDate("startDate");
         Date endDate = params.getDate("endDate");

@@ -10,8 +10,7 @@
       <arg column="name" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="no" javaType="java.lang.String" jdbcType="VARCHAR" />
       <arg column="contract_no" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="company_name" javaType="java.lang.String" jdbcType="VARCHAR" />
-      <arg column="group_name" javaType="java.lang.String" jdbcType="VARCHAR" />
+      <arg column="company_id" javaType="java.lang.Integer" jdbcType="INTEGER" />
       <arg column="contract_sign_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="start_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
       <arg column="end_date" javaType="java.util.Date" jdbcType="TIMESTAMP" />
@@ -31,14 +30,14 @@
     <!--
       WARNING - @mbg.generated
     -->
-    id, name, no, contract_no, company_name, group_name, contract_sign_date, start_date, 
+    id, name, no, contract_no, company_id, contract_sign_date, start_date, 
     end_date, months, total_price, manager, general_manager, province, city, status, 
     date_insert, date_update, delete_mark
   </sql>
 
   <select id="getList" resultType="java.util.HashMap">
-    SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_name AS companyName,
-           p.group_name AS groupName,DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,
+    SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,c.name AS companyName,
+           c.group_name AS groupName,DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,
            DATE_FORMAT(p.start_date,'%Y-%m-%d') AS startDate,DATE_FORMAT(p.end_date,'%Y-%m-%d') AS endDate, p.months AS months,
            CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,p.general_manager AS generalManagerId,p.manager AS managerId,
            e1.name AS generalManagerName,e2.name AS managerName,
@@ -46,6 +45,7 @@
     FROM project p
     LEFT JOIN employee e1 ON e1.id = p.general_manager
     LEFT JOIN employee e2 ON e2.id = p.manager
+    LEFT JOIN company c ON c.id = p.company_id
     WHERE p.delete_mark = 0
     <if test="params.projectName != null and params.projectName != ''">
       AND p.name LIKE CONCAT('%',#{params.projectName},'%')
@@ -54,14 +54,15 @@
   </select>
 
   <select id="getInfo" resultType="com.alibaba.fastjson.JSONObject">
-    SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,p.company_name AS companyName,
-           p.group_name AS groupName,DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,
+    SELECT p.id AS id,p.name AS name,p.no AS no,p.contract_no AS contractNo,c.name AS companyName,
+           c.group_name AS groupName,DATE_FORMAT(p.contract_sign_date,'%Y-%m-%d') AS contractSignDate,
            DATE_FORMAT(p.start_date,'%Y-%m-%d') AS startDate,DATE_FORMAT(p.end_date,'%Y-%m-%d') AS endDate, p.months AS months,
            CAST(CONVERT(p.total_price,DECIMAL(15,2)) AS CHAR) AS totalPrice,p.general_manager AS generalManagerId,p.manager AS managerId,
            e1.name AS generalManagerName,e2.name AS managerName,p.province,p.city,p.status
     FROM project p
     LEFT JOIN employee e1 ON e1.id = p.general_manager
     LEFT JOIN employee e2 ON e2.id = p.manager
+    LEFT JOIN company c ON c.id = p.company_id
     WHERE p.delete_mark = 0
     AND p.id = #{id}
   </select>

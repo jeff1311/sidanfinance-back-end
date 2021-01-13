@@ -27,18 +27,8 @@ public class Project {
     @Column(name = "contract_no")
     private String contractNo;
 
-    /**
-     * 合同甲方名称
-     */
-    @Column(name = "company_name")
-    private String companyName;
-
-    /**
-     * 合同甲方集团名称
-     */
-    @Column(name = "group_name")
-    private String groupName;
-
+    private Integer companyId;
+    
     /**
      * 合同签订时间
      */
@@ -117,8 +107,6 @@ public class Project {
         this.name = name;
         this.no = no;
         this.contractNo = contractNo;
-        this.companyName = companyName;
-        this.groupName = groupName;
         this.contractSignDate = contractSignDate;
         this.startDate = startDate;
         this.endDate = endDate;
@@ -210,41 +198,13 @@ public class Project {
         this.contractNo = contractNo == null ? null : contractNo.trim();
     }
 
-    /**
-     * 获取合同甲方名称
-     *
-     * @return company_name - 合同甲方名称
-     */
-    public String getCompanyName() {
-        return companyName;
-    }
+    public Integer getCompanyId() {
+		return companyId;
+	}
 
-    /**
-     * 设置合同甲方名称
-     *
-     * @param companyName 合同甲方名称
-     */
-    public void setCompanyName(String companyName) {
-        this.companyName = companyName == null ? null : companyName.trim();
-    }
-
-    /**
-     * 获取合同甲方集团名称
-     *
-     * @return group_name - 合同甲方集团名称
-     */
-    public String getGroupName() {
-        return groupName;
-    }
-
-    /**
-     * 设置合同甲方集团名称
-     *
-     * @param groupName 合同甲方集团名称
-     */
-    public void setGroupName(String groupName) {
-        this.groupName = groupName == null ? null : groupName.trim();
-    }
+	public void setCompanyId(Integer companyId) {
+		this.companyId = companyId;
+	}
 
     /**
      * 获取合同签订时间
