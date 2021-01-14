@@ -26,22 +26,14 @@ public interface IFinanceService {
 
     public abstract JSONObject addEmployee(JSONObject params);
 
-//    public abstract JSONObject attendanceYear(JSONObject params);
-//
-//    public abstract JSONObject attendanceYearData(JSONObject params);
-//
-//    public abstract JSONObject attendanceCalendar(JSONObject params);
-//
-//    public abstract JSONObject attendanceCalendarUpdate(JSONObject params);
-//
-//    public abstract JSONObject attendanceSalaryUpdate(JSONObject params);
-
     public abstract JSONObject projectAddEmp(JSONObject params);
 
     public abstract JSONObject projectEmpList(JSONObject params);
 
-    public abstract JSONObject attendanceDayList(JSONObject params);
+    public abstract JSONObject attendanceList(JSONObject params);
 
-    public abstract JSONObject attendanceDayInfo(JSONObject params);
+    public abstract JSONObject attendanceDetail(JSONObject params);
+    
+    public abstract JSONObject attendance(JSONObject params);
 
 }

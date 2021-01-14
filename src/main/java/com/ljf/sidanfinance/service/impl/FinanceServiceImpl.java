@@ -1,23 +1,34 @@
 package com.ljf.sidanfinance.service.impl;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONArray;
-import com.alibaba.fastjson.JSONObject;
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
-import com.ljf.sidanfinance.dao.mapper.*;
-import com.ljf.sidanfinance.dao.model.*;
-import com.ljf.sidanfinance.service.IFinanceService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-import tk.mybatis.mapper.entity.Example;
-
 import java.math.BigDecimal;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
+import com.ljf.sidanfinance.dao.mapper.AttendanceDetailMapper;
+import com.ljf.sidanfinance.dao.mapper.AttendanceMapper;
+import com.ljf.sidanfinance.dao.mapper.CalenMapper;
+import com.ljf.sidanfinance.dao.mapper.CompanyMapper;
+import com.ljf.sidanfinance.dao.mapper.EmployeeMapper;
+import com.ljf.sidanfinance.dao.mapper.EmployeeSalaryMapper;
+import com.ljf.sidanfinance.dao.mapper.ProjectEmployeeMapper;
+import com.ljf.sidanfinance.dao.mapper.ProjectMapper;
+import com.ljf.sidanfinance.dao.model.Attendance;
+import com.ljf.sidanfinance.dao.model.AttendanceDetail;
+import com.ljf.sidanfinance.dao.model.Code;
+import com.ljf.sidanfinance.dao.model.Company;
+import com.ljf.sidanfinance.dao.model.Employee;
+import com.ljf.sidanfinance.dao.model.Project;
+import com.ljf.sidanfinance.dao.model.ProjectEmployee;
+import com.ljf.sidanfinance.service.IFinanceService;
 
 
 @Service("financeService")
@@ -36,7 +47,9 @@ public class FinanceServiceImpl implements IFinanceService {
     @Autowired
     EmployeeSalaryMapper employeeSalaryMapper;
     @Autowired
-    AttendanceDayMapper attendanceDayMapper;
+    AttendanceMapper attendanceMapper;
+    @Autowired
+    AttendanceDetailMapper attendanceDetailMapper;
 
     @Override
     public JSONObject getIndexData() {
@@ -48,7 +61,7 @@ public class FinanceServiceImpl implements IFinanceService {
     public JSONObject getProjectList(JSONObject params) {
         PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
         List<Map<String, String>> list = projectMapper.getList(params);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Map<String, String>> pageInfo = new PageInfo<>(list);
 //        PageHelper.clearPage();
         JSONObject info = Code.SUCCESS.toJson();
         info.put("count", pageInfo.getTotal());
@@ -138,7 +151,7 @@ public class FinanceServiceImpl implements IFinanceService {
             PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
         }
         List<Map<String, String>> list = employeeMapper.getList(params);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Map<String, String>> pageInfo = new PageInfo<>(list);
 //        PageHelper.clearPage();
         JSONObject info = Code.SUCCESS.toJson();
         info.put("count", pageInfo.getTotal());
@@ -157,7 +170,7 @@ public class FinanceServiceImpl implements IFinanceService {
     @Override
     public JSONObject getEmployeeListAll(JSONObject params) {
         List<Map<String, String>> list = employeeMapper.getList(params);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Map<String, String>> pageInfo = new PageInfo<>(list);
         JSONObject info = Code.SUCCESS.toJson();
         info.put("list", JSON.parseArray(JSON.toJSONString(list)));
         return info;
@@ -166,7 +179,7 @@ public class FinanceServiceImpl implements IFinanceService {
     @Override
     public JSONObject getEmployeeListProject(JSONObject params) {
         List<Map<String, String>> list = employeeMapper.getProjectList(params);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Map<String, String>> pageInfo = new PageInfo<>(list);
         JSONObject info = Code.SUCCESS.toJson();
         info.put("list", JSON.parseArray(JSON.toJSONString(list)));
         return info;
@@ -203,146 +216,6 @@ public class FinanceServiceImpl implements IFinanceService {
         }
     }
 
-//    @Override
-//    public JSONObject attendanceYear(JSONObject params) {
-//        List<String> list = attendanceDayMapper.getYear(params);
-//        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-//        String thisYear = sdf.format(new Date());
-//        List<EmployeeSalary> esList = employeeSalaryMapper.getByYear(params.getInteger("employeeId"),
-//                params.getInteger("projectId"), thisYear);
-//        if(esList.size() < 12){
-//            for(int i = 1;i <= 12;i ++){
-//                EmployeeSalary es = employeeSalaryMapper.getByMonth(params.getInteger("employeeId"),
-//                        params.getInteger("projectId"), thisYear, String.valueOf(i));
-//                if(es == null){
-//                    es = new EmployeeSalary();
-//                    es.setEmployeeId(params.getInteger("employeeId"));
-//                    es.setProjectId(params.getInteger("projectId"));
-//                    es.setYear(thisYear);
-//                    es.setMonth(String.valueOf(i));
-//                    es.setDateInsert(new Date());
-//                    employeeSalaryMapper.insertSelective(es);
-//                }
-//            }
-//            esList = employeeSalaryMapper.getByYear(params.getInteger("employeeId"),
-//                    params.getInteger("projectId"), thisYear);
-//        }
-//        if(list.size() == 0 || !list.contains(thisYear)){
-//            list.add(thisYear);
-//        }
-//        JSONObject info = Code.SUCCESS.toJson();
-//        info.put("list", JSON.parseArray(JSON.toJSONString(list)));
-//        info.put("esList", JSON.parseArray(JSON.toJSONString(esList)));
-//        return info;
-//    }
-//
-//    @Override
-//    public JSONObject attendanceYearData(JSONObject params) {
-//        List<EmployeeSalary> esList = employeeSalaryMapper.getByYear(params.getInteger("employeeId"),
-//                params.getInteger("projectId"), params.getString("year"));
-//        if(esList.size() < 12){
-//            for(int i = 1;i <= 12;i ++){
-//                EmployeeSalary es = employeeSalaryMapper.getByMonth(params.getInteger("employeeId"),
-//                        params.getInteger("projectId"), params.getString("year"), String.valueOf(i));
-//                if(es == null){
-//                    es = new EmployeeSalary();
-//                    es.setEmployeeId(params.getInteger("employeeId"));
-//                    es.setProjectId(params.getInteger("projectId"));
-//                    es.setYear(params.getString("year"));
-//                    es.setMonth(String.valueOf(i));
-//                    es.setDateInsert(new Date());
-//                    employeeSalaryMapper.insertSelective(es);
-//                }
-//            }
-//            esList = employeeSalaryMapper.getByYear(params.getInteger("employeeId"),
-//                    params.getInteger("projectId"), params.getString("year"));
-//        }
-//        JSONObject info = Code.SUCCESS.toJson();
-//        info.put("esList", JSON.parseArray(JSON.toJSONString(esList)));
-//        return info;
-//    }
-//
-//    @Override
-//    public JSONObject attendanceCalendar(JSONObject params) {
-//        List<Map<String,String>> list = attendanceDayMapper.getAttendace(params);
-//        JSONObject info = Code.SUCCESS.toJson();
-//        info.put("calendar",JSON.parseArray(JSON.toJSONString(list)));
-//        return info;
-//    }
-//
-//    @Override
-//    public JSONObject attendanceCalendarUpdate(JSONObject params) {
-//        Integer projectId = params.getInteger("projectId");
-//        Integer employeeId = params.getInteger("employeeId");
-//        String year = params.getString("year");
-//        String month = String.valueOf(params.getInteger("month"));
-//        JSONArray days = JSON.parseArray(params.getString("days"));
-//        for(Object day : days){
-//            JSONObject d = JSON.parseObject(String.valueOf(day));
-//            AttendanceDay ad = attendanceDayMapper.getByDate(d.getString("date"));
-//            if(ad == null){
-//                ad = new AttendanceDay();
-//                ad.setProjectId(projectId);
-//                ad.setEmployeeId(employeeId);
-//                ad.setForenoon(d.getBoolean("forenoon"));
-//                ad.setAfternoon(d.getBoolean("afternoon"));
-//                ad.setHour(d.getByte("hour"));
-//                ad.setDate(d.getDate("date"));
-//                ad.setDateInsert(new Date());
-//                attendanceDayMapper.insertSelective(ad);
-//            }else{
-//                ad.setProjectId(projectId);
-//                ad.setEmployeeId(employeeId);
-//                ad.setForenoon(d.getBoolean("forenoon"));
-//                ad.setAfternoon(d.getBoolean("afternoon"));
-//                ad.setHour(d.getByte("hour"));
-//                ad.setDate(d.getDate("date"));
-//                ad.setDateUpdate(new Date());
-//                attendanceDayMapper.updateByPrimaryKeySelective(ad);
-//            }
-//        }
-//        //更新工资表
-//        EmployeeSalary es = employeeSalaryMapper.getByMonth(employeeId,projectId,year,month);
-//        if(es != null){
-//            Map<String, String> m = attendanceDayMapper.sumMonth(params);
-//            double day = Double.parseDouble(String.valueOf(m.get("day")));
-//            int hour = Integer.parseInt(String.valueOf(m.get("hour")));
-//            es.setDay(day);
-//            es.setHour(hour);
-//            //工资计算公式（（工时 / 6 + 工日） * 工价） + 奖金 - 支款）
-//            BigDecimal bd1 = new BigDecimal(hour);//工时
-//            BigDecimal bd2 = new BigDecimal(day);//工日
-//            BigDecimal bd3 = new BigDecimal(es.getPrice());//工价
-//            BigDecimal bd4 = new BigDecimal(es.getBonus());//奖励
-//            BigDecimal bd5 = new BigDecimal(es.getWithdraw());//支款
-//            double amount = bd1.divide(new BigDecimal(6),2, BigDecimal.ROUND_HALF_UP).add(bd2).
-//                    multiply(bd3).setScale(2,BigDecimal.ROUND_HALF_UP).
-//                    add(bd4).subtract(bd5).doubleValue();
-//            es.setAmount(amount);
-//            employeeSalaryMapper.updateByPrimaryKeySelective(es);
-//        }
-//        return Code.SUCCESS.toJson();
-//    }
-//
-//    @Override
-//    public JSONObject attendanceSalaryUpdate(JSONObject params) {
-//        Integer projectId = params.getInteger("projectId");
-//        Integer employeeId = params.getInteger("employeeId");
-//        String year = params.getString("year");
-//        String month = String.valueOf(params.getInteger("month"));
-//        EmployeeSalary es = employeeSalaryMapper.getByMonth(employeeId,projectId,year,month);
-//        if(es != null){
-//            es.setPrice(params.getDouble("price"));
-//            es.setBonus(params.getDouble("bonus"));
-//            es.setWithdraw(params.getDouble("withdraw"));
-//            es.setAmount(params.getDouble("amount"));
-//            es.setActualAmount(params.getDouble("actualAmount"));
-//            es.setDateUpdate(new Date());
-//            employeeSalaryMapper.updateByPrimaryKeySelective(es);
-//        }
-//        return Code.SUCCESS.toJson();
-//    }
-
     @Override
     public JSONObject projectAddEmp(JSONObject params) {
         Integer projectId = params.getInteger("projectId");
@@ -365,7 +238,7 @@ public class FinanceServiceImpl implements IFinanceService {
     public JSONObject projectEmpList(JSONObject params) {
         PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
         List<Map<String, String>> list = projectEmployeeMapper.getList(params);
-        PageInfo pageInfo = new PageInfo(list);
+        PageInfo<Map<String, String>> pageInfo = new PageInfo<>(list);
         JSONObject info = Code.SUCCESS.toJson();
         info.put("count", pageInfo.getTotal());
         info.put("data", JSON.parseArray(JSON.toJSONString(list)));
@@ -373,10 +246,10 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
-    public JSONObject attendanceDayList(JSONObject params) {
+    public JSONObject attendanceList(JSONObject params) {
         PageHelper.startPage(params.getInteger("page"),params.getInteger("limit"));
-        List<JSONObject> list = attendanceDayMapper.getList(params);
-        PageInfo pageInfo = new PageInfo(list);
+        List<JSONObject> list = attendanceMapper.getList(params);
+        PageInfo<JSONObject> pageInfo = new PageInfo<>(list);
         JSONObject info = Code.SUCCESS.toJson();
         info.put("count", pageInfo.getTotal());
         info.put("data", list);
@@ -384,14 +257,14 @@ public class FinanceServiceImpl implements IFinanceService {
     }
 
     @Override
-    public JSONObject attendanceDayInfo(JSONObject params) {
+    public JSONObject attendanceDetail(JSONObject params) {
         //项目列表
         List<Map<String, String>> list = projectMapper.getList(params);
         JSONObject result = Code.SUCCESS.toJson();
         result.put("projectList", JSON.parseArray(JSON.toJSONString(list)));
         //考勤基本信息
-        AttendanceDay attendanceDayInfo = attendanceDayMapper.getInfo(params.getString("id"));
-        result.put("info",attendanceDayInfo);
+//        AttendanceDay attendanceDayInfo = attendanceDetailMapper.getInfo(params.getString("id"));
+//        result.put("info",attendanceDayInfo);
         return result;
     }
 
@@ -424,5 +297,82 @@ public class FinanceServiceImpl implements IFinanceService {
         int monthsDiff = Math.abs(yearInterval * 12 + monthInterval);
         return monthsDiff;
     }
+
+	@Override
+	public JSONObject attendance(JSONObject params) {
+		//考勤ID
+		Integer attendanceId = params.getInteger("attendanceId");
+		//项目ID
+		Integer projectId = params.getInteger("projectId");
+		//工种
+		Integer type = params.getInteger("type");
+		//年份
+		Integer year = params.getInteger("year");
+		//月份
+		Integer month = params.getInteger("month");
+		//负责人
+		Integer manager = params.getInteger("manager");
+		Attendance a = new Attendance();
+		a.setProjectId(projectId);
+		a.setType(1);
+		a.setEmpType(type);
+		a.setYear(year);
+		a.setMonth(month);
+		a.setManager(manager);
+		if(attendanceId == null) {
+			a.setDateInsert(new Date());
+			attendanceMapper.insertSelective(a);
+			attendanceId = a.getId();
+		}else {
+			a.setId(attendanceId);
+			a.setDateUpdate(new Date());
+			attendanceMapper.updateByPrimaryKeySelective(a);
+		}
+		
+		//工人考勤
+		String empListStr = params.getString("empList");
+		if(empListStr != null && !"".equals(empListStr.trim())) {
+			List<JSONObject> empList = JSON.parseArray(empListStr,JSONObject.class);
+			for(JSONObject emp : empList) {
+				Integer empId = emp.getInteger("id");
+				Double day = emp.getDouble("day");
+				Double hour = emp.getDouble("hour");
+				Double price = emp.getDouble("price");
+				Double deduct = emp.getDouble("deduct");
+				Double bonus = emp.getDouble("bonus");
+				//点工（工时/6+工日）*工价
+				Double amount = null;
+				Double payAmount = null;
+				if(day != null && hour != null && price != null) {
+					amount = (hour / 6 + day) * price;
+					payAmount = amount;
+			        if(deduct != null) {
+			        	payAmount -= deduct;
+			        }
+			        if(bonus != null) {
+			        	payAmount += bonus;
+			        }
+			        BigDecimal bd1 = new BigDecimal(amount);
+			        amount = bd1.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+			        BigDecimal bd2 = new BigDecimal(payAmount);
+			        payAmount = bd2.setScale(2, BigDecimal.ROUND_HALF_UP).doubleValue();
+				}
+				AttendanceDetail ad = new AttendanceDetail();
+				ad.setAttId(attendanceId);
+				ad.setEmpId(empId);
+				ad.setDay(day);
+				ad.setHour(hour);
+				ad.setPrice(price);
+				ad.setAmount(amount);
+				ad.setPayAmount(payAmount);
+				ad.setDeductAmount(deduct);
+				ad.setBonus(bonus);
+				ad.setDateInsert(new Date());
+				attendanceDetailMapper.insertSelective(ad);
+			}
+		}
+		
+		return Code.SUCCESS.toJson();
+	}
 
 }

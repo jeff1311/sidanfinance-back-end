@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljf.sidanfinance.dao.mapper.AttendanceDetailMapper" >
+  <resultMap id="BaseResultMap" type="com.ljf.sidanfinance.dao.model.AttendanceDetail" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="att_id" property="attId" jdbcType="INTEGER" />
+    <result column="emp_id" property="empId" jdbcType="INTEGER" />
+    <result column="day" property="day" jdbcType="DOUBLE" />
+    <result column="hour" property="hour" jdbcType="DOUBLE" />
+    <result column="price" property="price" jdbcType="DOUBLE" />
+    <result column="amount" property="amount" jdbcType="DOUBLE" />
+    <result column="pay_amount" property="payAmount" jdbcType="DOUBLE" />
+    <result column="deduct_amount" property="deductAmount" jdbcType="DOUBLE" />
+    <result column="bonus" property="bonus" jdbcType="DOUBLE" />
+    <result column="date_insert" property="dateInsert" jdbcType="TIMESTAMP" />
+    <result column="date_update" property="dateUpdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, att_id, emp_id, day, hour, price, amount, pay_amount, deduct_amount, bonus, 
+    date_insert, date_update
+  </sql>
+  
+</mapper>

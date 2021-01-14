@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="com.ljf.sidanfinance.dao.mapper.AttendanceMapper" >
+  <resultMap id="BaseResultMap" type="com.ljf.sidanfinance.dao.model.Attendance" >
+    <id column="id" property="id" jdbcType="INTEGER" />
+    <result column="project_id" property="projectId" jdbcType="INTEGER" />
+    <result column="type" property="type" jdbcType="INTEGER" />
+    <result column="emp_type" property="empType" jdbcType="INTEGER" />
+    <result column="year" property="year" jdbcType="INTEGER" />
+    <result column="month" property="month" jdbcType="INTEGER" />
+    <result column="manager" property="manager" jdbcType="INTEGER" />
+    <result column="date_insert" property="dateInsert" jdbcType="TIMESTAMP" />
+    <result column="date_update" property="dateUpdate" jdbcType="TIMESTAMP" />
+  </resultMap>
+  <sql id="Base_Column_List" >
+    id, project_id, type, emp_type, year, month, manager, date_insert, date_update
+  </sql>
+  
+</mapper>
