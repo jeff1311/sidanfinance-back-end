@@ -8,6 +8,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
@@ -260,50 +261,29 @@ public class FinanceServiceImpl implements IFinanceService {
     public JSONObject attendanceDetail(JSONObject params) {
         //项目列表
         List<Map<String, String>> list = projectMapper.getList(params);
-        JSONObject result = Code.SUCCESS.toJson();
-        result.put("projectList", JSON.parseArray(JSON.toJSONString(list)));
         //考勤基本信息
-//        AttendanceDay attendanceDayInfo = attendanceDetailMapper.getInfo(params.getString("id"));
-//        result.put("info",attendanceDayInfo);
+        JSONObject attInfo = attendanceMapper.getInfo(params.getInteger("attId"));
+        //考勤明细
+        List<JSONObject> adList = attendanceDetailMapper.getList(params);
+        JSONObject result = Code.SUCCESS.toJson();
+        result.put("attInfo", attInfo);
+        result.put("adList", adList);
+        result.put("projectList", JSON.parseArray(JSON.toJSONString(list)));
         return result;
     }
 
-    /**
-     * 获取两个日期相差的月数
-     */
-    public static int getMonthDiff(Date d1, Date d2) {
-        Calendar c1 = Calendar.getInstance();
-        Calendar c2 = Calendar.getInstance();
-        c1.setTime(d1);
-        c2.setTime(d2);
-        int year1 = c1.get(Calendar.YEAR);
-        int year2 = c2.get(Calendar.YEAR);
-        int month1 = c1.get(Calendar.MONTH);
-        int month2 = c2.get(Calendar.MONTH);
-        int day1 = c1.get(Calendar.DAY_OF_MONTH);
-        int day2 = c2.get(Calendar.DAY_OF_MONTH);
-        // 获取年的差值 
-        int yearInterval = year1 - year2;
-        // 如果 d1的 月-日 小于 d2的 月-日 那么 yearInterval-- 这样就得到了相差的年数
-        if (month1 < month2 || month1 == month2 && day1 < day2) {
-            yearInterval--;
-        }
-        // 获取月数差值
-        int monthInterval = (month1 + 12) - month2;
-        if (day1 < day2) {
-            monthInterval--;
-        }
-        monthInterval %= 12;
-        int monthsDiff = Math.abs(yearInterval * 12 + monthInterval);
-        return monthsDiff;
-    }
 
 	@Override
+	@Transactional
 	public JSONObject attendance(JSONObject params) {
 		//考勤ID
 		Integer attendanceId = params.getInteger("attendanceId");
 		//项目ID
-		Integer projectId = params.getInteger("projectId");
+		String projectIdStr = params.getString("projectId");
+		Integer projectId = null;
+		if(projectIdStr != null && !"".equals(projectIdStr)) {
+			projectId = Integer.parseInt(projectIdStr.split(",")[0]);
+		}
 		//工种
 		Integer type = params.getInteger("type");
 		//年份
@@ -332,6 +312,7 @@ public class FinanceServiceImpl implements IFinanceService {
 		//工人考勤
 		String empListStr = params.getString("empList");
 		if(empListStr != null && !"".equals(empListStr.trim())) {
+			int delNum = attendanceDetailMapper.deleteByAttId(attendanceId);
 			List<JSONObject> empList = JSON.parseArray(empListStr,JSONObject.class);
 			for(JSONObject emp : empList) {
 				Integer empId = emp.getInteger("id");
@@ -373,6 +354,36 @@ public class FinanceServiceImpl implements IFinanceService {
 		}
 		
 		return Code.SUCCESS.toJson();
+	}
+	
+	/**
+	 * 获取两个日期相差的月数
+	 */
+	public static int getMonthDiff(Date d1, Date d2) {
+		Calendar c1 = Calendar.getInstance();
+		Calendar c2 = Calendar.getInstance();
+		c1.setTime(d1);
+		c2.setTime(d2);
+		int year1 = c1.get(Calendar.YEAR);
+		int year2 = c2.get(Calendar.YEAR);
+		int month1 = c1.get(Calendar.MONTH);
+		int month2 = c2.get(Calendar.MONTH);
+		int day1 = c1.get(Calendar.DAY_OF_MONTH);
+		int day2 = c2.get(Calendar.DAY_OF_MONTH);
+		// 获取年的差值 
+		int yearInterval = year1 - year2;
+		// 如果 d1的 月-日 小于 d2的 月-日 那么 yearInterval-- 这样就得到了相差的年数
+		if (month1 < month2 || month1 == month2 && day1 < day2) {
+			yearInterval--;
+		}
+		// 获取月数差值
+		int monthInterval = (month1 + 12) - month2;
+		if (day1 < day2) {
+			monthInterval--;
+		}
+		monthInterval %= 12;
+		int monthsDiff = Math.abs(yearInterval * 12 + monthInterval);
+		return monthsDiff;
 	}
 
 }

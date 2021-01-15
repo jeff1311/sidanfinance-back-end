@@ -16,4 +16,36 @@
     id, project_id, type, emp_type, year, month, manager, date_insert, date_update
   </sql>
   
+  <select id="getList" resultType="com.alibaba.fastjson.JSONObject">
+  	SELECT a.id,a.project_id AS projectId,p.name AS projectName,p.no AS projectNo,
+  		   CASE a.emp_type WHEN 0 THEN '管理' 
+		       WHEN 1 THEN '木工'
+		       WHEN 2 THEN '瓦工'
+		       WHEN 3 THEN '油工'
+		       WHEN 4 THEN '电工'
+		       WHEN 5 THEN '小工'
+		       WHEN 6 THEN '抹灰工' END AS empType,
+	       a.year,a.month,e.id AS manager,e.name AS managerName,
+	       IFNULL(ROUND(SUM(ad.amount),2),0) AS amount,
+	       IFNULL(ROUND(SUM(ad.pay_amount),2),0) AS payAmount
+	FROM attendance a
+	LEFT JOIN project p ON p.id = a.project_id
+	LEFT JOIN employee e ON e.id = a.manager
+	LEFT JOIN attendance_detail ad ON ad.att_id = a.id
+	GROUP BY a.id
+	ORDER BY a.date_insert DESC
+  </select>
+  
+  <select id="getInfo" resultType="com.alibaba.fastjson.JSONObject">
+  	SELECT a.id,a.project_id AS projectId,p.name AS projectName,p.no AS projectNo,
+	       a.emp_type AS empType,a.year,a.month,e.id AS manager,e.name AS managerName,
+	       IFNULL(ROUND(SUM(ad.amount),2),0) AS amount,
+	       IFNULL(ROUND(SUM(ad.pay_amount),2),0) AS payAmount
+	FROM attendance a
+	LEFT JOIN project p ON p.id = a.project_id
+	LEFT JOIN employee e ON e.id = a.manager
+	LEFT JOIN attendance_detail ad ON ad.att_id = a.id
+	WHERE a.id = #{attId}
+  </select>
+  
 </mapper>

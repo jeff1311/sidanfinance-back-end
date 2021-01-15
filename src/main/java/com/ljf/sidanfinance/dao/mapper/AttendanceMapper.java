@@ -12,5 +12,7 @@ import tk.mybatis.mapper.common.Mapper;
 public interface AttendanceMapper extends Mapper<Attendance> {
     
 	 public abstract List<JSONObject> getList(@Param("params") JSONObject params);
+	 
+	 public abstract JSONObject getInfo(@Param("attId") Integer attId);
 	
 }

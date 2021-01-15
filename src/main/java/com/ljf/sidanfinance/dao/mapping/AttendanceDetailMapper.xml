@@ -20,4 +20,24 @@
     date_insert, date_update
   </sql>
   
+  <select id="getList" resultType="com.alibaba.fastjson.JSONObject">
+  	SELECT ad.id,e.id AS empId,e.name AS empName,ad.day,ad.hour,ad.price,ad.amount,ad.pay_amount AS payAmount,
+		   CASE e.type WHEN 0 THEN '管理' 
+					   WHEN 1 THEN '木工'
+					   WHEN 2 THEN '瓦工'
+					   WHEN 3 THEN '油工'
+					   WHEN 4 THEN '电工'
+					   WHEN 5 THEN '小工'
+					   WHEN 6 THEN '抹灰工' END AS empType,
+	       ad.deduct_amount AS deductAmount,ad.bonus,e.cert_no AS idNo,e.bank_no AS bankNo
+	FROM attendance_detail ad
+	LEFT JOIN employee e ON e.id = ad.emp_id
+	WHERE ad.att_id = #{params.attId}
+	ORDER BY ad.date_insert DESC
+  </select>
+  
+  <delete id="deleteByAttId">
+  	DELETE FROM attendance_detail WHERE att_id = #{attId}
+  </delete>
+  
 </mapper>
