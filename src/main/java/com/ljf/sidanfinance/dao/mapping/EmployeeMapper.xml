@@ -102,7 +102,7 @@
         LEFT JOIN employee e2 ON e2.id = e.superior
         LEFT JOIN employee e3 ON e3.id = e.manager
         WHERE e.delete_mark = 0
-        AND e.id = ${id}
+        AND e.id = #{id}
     </select>
 
 </mapper>
